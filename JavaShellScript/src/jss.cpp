@@ -13,6 +13,12 @@
 using namespace std;
 
 /**
+ * Optionen für den Start von java
+ * hier sollte der Inhalt der zweiten Zeile rein
+ */
+string jvm_optionen = "";
+
+/**
  * Gibt den Namen der Main-Klasse zurück.
  * @param argument dateiname der java-datei
  */
@@ -87,6 +93,12 @@ string ErsteZeile(char* datei) {
         }
     }
 
+    //in der zweiter Zeile könnten Parameter für die JVM stehen.
+    if (zeilen.at(1).find("#option",0) == 0) {
+        jvm_optionen = zeilen.at(1).substr(7,string::npos);
+        zeilen.at(1) = "//" + zeilen.at(1);
+    }
+
     //wenn keine Klasse in der Quell-Datei deklariert ist, dann wird das hier
     //erledigt!
     if (!hatPublicClass) {
@@ -122,10 +134,9 @@ string ErsteZeile(char* datei) {
 
 
     //Inhalt der Quelle ins Ziel schreiben
-    for (int i=0;i<zeilen.size();i++) {
-        if (zeilen.at(i).find("#",0) != 0) {
-            ziel << zeilen.at(i) << endl;
-        }
+    //die erste Zeile wird weg gelassen, da nur für das OS wichtig
+    for (int i=1;i<zeilen.size();i++) {
+        ziel << zeilen.at(i) << endl;
     }
 
     //Klasse und main abschließen
@@ -159,7 +170,7 @@ int Compilieren(string tempdir) {
  */
 int Ausfuehren(string tempdir, int argc, char** argv) {
 
-    string komando = "java -cp " + tempdir;
+    string komando = "java " + jvm_optionen + " -cp " + tempdir;
 
     //der name der Main-Klasse ist der Dateiname im Argument 1
     string mainklasse = getMainClass(argv[1]);
