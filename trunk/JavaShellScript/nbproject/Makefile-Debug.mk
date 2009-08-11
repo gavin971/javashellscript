@@ -28,32 +28,41 @@ OBJECTDIR=build/Debug/${PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/src/cache.o \
 	${OBJECTDIR}/src/jss.o
 
 # C Compiler Flags
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-arch x86_64 -arch i386 -arch ppc -arch ppc64
-CXXFLAGS=-arch x86_64 -arch i386 -arch ppc -arch ppc64
+CCFLAGS=
+CXXFLAGS=
 
 # Fortran Compiler Flags
 FFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=
+LDLIBSOPTIONS=/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xgcc40-mt.a /Users/robert/Programm/boost_1_37_0/lib/x86/libboost_system-xgcc40-mt.a
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
 	${MAKE}  -f nbproject/Makefile-Debug.mk dist/Debug/${PLATFORM}/jss
 
+dist/Debug/${PLATFORM}/jss: /Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xgcc40-mt.a
+
+dist/Debug/${PLATFORM}/jss: /Users/robert/Programm/boost_1_37_0/lib/x86/libboost_system-xgcc40-mt.a
+
 dist/Debug/${PLATFORM}/jss: ${OBJECTFILES}
 	${MKDIR} -p dist/Debug/${PLATFORM}
 	${LINK.cc} -o dist/Debug/${PLATFORM}/jss ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
+${OBJECTDIR}/src/cache.o: src/cache.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	$(COMPILE.cc) -g -I../../boost_1_37_0/include/boost-1_37 -o ${OBJECTDIR}/src/cache.o src/cache.cpp
+
 ${OBJECTDIR}/src/jss.o: src/jss.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
-	$(COMPILE.cc) -g -o ${OBJECTDIR}/src/jss.o src/jss.cpp
+	$(COMPILE.cc) -g -I../../boost_1_37_0/include/boost-1_37 -o ${OBJECTDIR}/src/jss.o src/jss.cpp
 
 # Subprojects
 .build-subprojects:

@@ -9,14 +9,25 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <boost/filesystem.hpp>
+
+//der Cache speichert compilierte Dateien bis zu einem bestimmten alter
+#include "cache.h"
 
 using namespace std;
+namespace bs = boost::filesystem;
 
 /**
  * Optionen für den Start von java
  * hier sollte der Inhalt der zweiten Zeile rein
  */
 string jvm_optionen = "";
+
+/**
+ * Zeiger auf das Cache-Objekt.
+ * Das Cache-Objekt verwaltet den Cache.
+ */
+cache *Cache;
 
 /**
  * Gibt den Namen der Main-Klasse zurück.
@@ -38,7 +49,7 @@ string getMainClass(char* argument) {
  * es aber nicht, also weg damit.
  * @param datei Zeiger auf den Dateinamen
  */
-string ErsteZeile(char* datei) {
+string Preprozessor(char* datei) {
     //Ein und ausgabe Dateien
     ifstream quelle;
     ofstream ziel;
@@ -58,15 +69,12 @@ string ErsteZeile(char* datei) {
 
     //zieldatei = getenv("TMPDIR") + zieldatei.substr(index+1,zieldatei.length()-1);
 
-    string tempdir =  "_jss_XXXXXXXXXX";
-    tempdir = getenv("TMPDIR") + tempdir;
-    tempdir = mkdtemp((char*)tempdir.c_str());
-    tempdir += "/";
+    string tempdir = Cache->getCacheDir(string(datei)) + "/";
     zieldatei = tempdir + zieldatei.substr(index+1,string::npos);
     ziel.open(zieldatei.c_str());
     
    //prüfen, ob das öffnen geklappt hat
-    if (!quelle.is_open()) {
+    if (!ziel.is_open()) {
         cerr << "FEHLER: " << zieldatei << " konnte nicht geöffnet werden!" << endl;
         return "FEHLER";
     }
@@ -229,6 +237,15 @@ void Beschreibung() {
     cout << "./beispiel.java" << endl;
 }
 
+/** 
+ * Prüft ob die Eingabe-Datei existiert.
+ */
+bool DateiExistiert(char *datei) {
+    string dateiname(datei);
+    bs::path quelldatei(dateiname);
+    return bs::exists(quelldatei);
+}
+
 /*
  * 
  */
@@ -240,23 +257,39 @@ int main(int argc, char** argv) {
         return (EXIT_SUCCESS);
     }
 
-    //im Argument 1 steht die java-Datei, diese muss um die erste Zeile
-    //erleichtert werden
-    string tempdir = ErsteZeile(argv[1]);
-    if (tempdir.find("FEHLER") != string::npos) {
+    //cache initialisieren
+    Cache = new cache();
+
+    //Prüfen, ob die Datei existiert
+    if (!DateiExistiert(argv[1])) {
+        cout << "Eingabedatei existiert nicht!" << endl;
         return (EXIT_FAILURE);
     }
 
-    //die java-datei im tempdir compilieren
-    if (Compilieren(tempdir) != 0) {
-        return (EXIT_FAILURE);
+    //Prüfen, ob die datei schon im Cache vorhanden ist
+    string quelldatei(argv[1]);
+    string tempdir;
+    if (!Cache->isInCache(quelldatei)) {
+        //im Argument 1 steht die java-Datei, diese muss um die erste Zeile
+        //erleichtert werden
+        tempdir = Preprozessor(argv[1]);
+        if (tempdir.find("FEHLER") != string::npos) {
+            return (EXIT_FAILURE);
+        }
+
+        //die java-datei im tempdir compilieren
+        if (Compilieren(tempdir) != 0) {
+            return (EXIT_FAILURE);
+        }
+    } else {
+        tempdir = Cache->getCacheDir(quelldatei);
     }
 
     //Ausführen
     int ergebnis = Ausfuehren(tempdir, argc, argv);
     
     //Temporäre Dateien löschen
-    TempLoeschen(tempdir);
+    //TempLoeschen(tempdir);
 
     return ergebnis;
 }
