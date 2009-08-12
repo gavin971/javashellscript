@@ -92,7 +92,8 @@ string cache::getCacheDirComplett(string datei) {
 /**
  * Prüft ob diese Datei schon im Cache zu finden ist
  */
-bool cache::isInCache(string datei) {
+bool cache::isInCache(vector<bs::path> *dateiliste) {
+    string datei = dateiliste->at(0).string();
     bs::path quelldatei(getCacheDirComplett(datei));
     return bs::exists(quelldatei);
 }

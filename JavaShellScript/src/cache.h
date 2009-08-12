@@ -13,6 +13,7 @@
 #include <boost/filesystem.hpp>
 
 using namespace std;
+namespace bs = boost::filesystem;
 
 class cache {
 public:
@@ -25,7 +26,7 @@ public:
     /**
      * Gibt true zurück, wenn diese Datei schon im Cache ist
      */
-    bool isInCache(string datei);
+    bool isInCache(vector<bs::path> *dateiliste);
 
 private:
     /** 
