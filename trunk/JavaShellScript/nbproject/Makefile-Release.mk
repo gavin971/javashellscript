@@ -28,8 +28,9 @@ OBJECTDIR=build/Release/${PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/src/jss.o \
 	${OBJECTDIR}/src/cache.o \
-	${OBJECTDIR}/src/jss.o
+	${OBJECTDIR}/src/preprozessor.o
 
 # C Compiler Flags
 CFLAGS=
@@ -56,13 +57,17 @@ dist/Release/${PLATFORM}/jss: ${OBJECTFILES}
 	${MKDIR} -p dist/Release/${PLATFORM}
 	${LINK.cc} -o dist/Release/${PLATFORM}/jss -Wl,-S ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
+${OBJECTDIR}/src/jss.o: src/jss.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	$(COMPILE.cc) -O2 -s -I../../boost_1_37_0/include/boost-1_37 -o ${OBJECTDIR}/src/jss.o src/jss.cpp
+
 ${OBJECTDIR}/src/cache.o: src/cache.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	$(COMPILE.cc) -O2 -s -I../../boost_1_37_0/include/boost-1_37 -o ${OBJECTDIR}/src/cache.o src/cache.cpp
 
-${OBJECTDIR}/src/jss.o: src/jss.cpp 
+${OBJECTDIR}/src/preprozessor.o: src/preprozessor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
-	$(COMPILE.cc) -O2 -s -I../../boost_1_37_0/include/boost-1_37 -o ${OBJECTDIR}/src/jss.o src/jss.cpp
+	$(COMPILE.cc) -O2 -s -I../../boost_1_37_0/include/boost-1_37 -o ${OBJECTDIR}/src/preprozessor.o src/preprozessor.cpp
 
 # Subprojects
 .build-subprojects:
