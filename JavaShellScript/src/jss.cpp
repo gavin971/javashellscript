@@ -24,55 +24,6 @@ namespace bs = boost::filesystem;
  */
 preprozessor *Pp;
 
-
-
-/**
- * Java-dateien compilieren.
- * Compiliert alle dateien im Temp-Dir.
- * @param tempdir
- */
-int Compilieren(string tempdir) {
-    string komando = "javac " + tempdir + "*.java";
-    return system(komando.c_str());
-    
-}
-
-/** 
- * Führt das Compilierte Programm aus.
- * das compilierte Programm wird mit den übergebenden Parametern ausgeführt.
- * @param a an integer argument. 
- * @param s a constant character pointer. 
- */
-int Ausfuehren(string tempdir, int argc, char** argv) {
-
-    string komando = "java " + Pp->jvm_optionen + " -cp " + tempdir;
-
-    //der name der Main-Klasse ist der Dateiname im Argument 1
-    string mainklasse = Pp->getMainClass(argv[1]);
-
-    //Mainklasse anhängen
-    komando += " " + mainklasse;
-
-    //Argumente anhängen
-    for (int i=2;i<argc;i++) {
-        komando += " " + string(argv[i]);
-    }
-
-    //Ausführen
-    return system(komando.c_str());
-}
-
-/**
- * Löscht die Compilierten Dateien.
- * Langtext.
- * @param a an integer argument.
- * @param s a constant character pointer.
- */
-void TempLoeschen(string tempdir) {
-    string komando = "rm -rf " + tempdir;
-    system(komando.c_str());
-}
-
 /**
  * Anleitung ausgeben.
  * Gibt eine Kurze Anleitung auf dem Bildschirm aus.
@@ -117,6 +68,7 @@ int main(int argc, char** argv) {
     }
 
     //Preprozessor initialisieren
+    //Dabei werden die Dateien in den Cache kopiert und Compiliert
     Pp = new preprozessor(argc, argv);
 
     //Falls es probleme gab, raus hier!
@@ -124,28 +76,11 @@ int main(int argc, char** argv) {
         return (EXIT_FAILURE);
     }
     
-    //Prüfen, ob die datei schon im Cache vorhanden ist
-    string tempdir;
-    if (!Pp->Cache->isInCache(Pp->getDateiListe())) {
-        //im Argument 1 steht die java-Datei, diese muss um die erste Zeile
-        //erleichtert werden
-        Pp->prozess();
-        bs::path d = Pp->getDateiListe()->at(0);
-        tempdir = Pp->Cache->getCacheDir(d.string()) + "/";
-        //die java-datei im tempdir compilieren
-        if (Compilieren(tempdir) != 0) {
-            return (EXIT_FAILURE);
-        }
-    } else {
-        bs::path d = Pp->getDateiListe()->at(0);
-        tempdir = Pp->Cache->getCacheDir(d.string());
-    }
-
     //Ausführen
-    int ergebnis = Ausfuehren(tempdir, argc, argv);
+    int ergebnis = Pp->Ausfuehren();
     
-    //Temporäre Dateien löschen
-    //TempLoeschen(tempdir);
+    //Alte Cache-Einträge löschen (älter als 7 Tage)
+    Pp->Cache->AlteEintrageLoeschen(604800);
 
     return ergebnis;
 }

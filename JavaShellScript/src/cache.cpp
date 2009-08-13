@@ -26,8 +26,8 @@ cache::cache() {
         bs::create_directories(*verzeichnis);
     }
 
-    //
-    //boost::filesystem::
+    CacheDirTeil1 = "";
+    CacheDirComplett = "";
 }
 
 cache::~cache() {
@@ -39,12 +39,26 @@ cache::~cache() {
  * Falls das Verzeichnis noch nicht existiert wird es angelegt
  * @param datei Name der Quell-Code-Datei inkl verzeichnis
  */
-string cache::getCacheDir(string datei) {
-    string ergebnis = getCacheDirComplett(datei);
+string cache::getCacheDir(vector<bs::path> *dateiliste) {
+    string ergebnis = getCacheDirComplett(dateiliste);
 
     //prüfen ob das Verzeichnis schon existiert, falls nicht anlegen
     bs::path cachedir(ergebnis);
     if(!bs::exists(cachedir)) {
+        //falls noch eine alte Version im Cache liegt, dann kann diese
+        //jetzt gelöscht werden
+        vector<bs::path> *cacheinhalt = getEintraegeInVerzeichnis(*verzeichnis);
+        for (int i=0;i<cacheinhalt->size();i++) {
+            bs::path eintrag = *verzeichnis;
+            eintrag /= cacheinhalt->at(i);
+            //prüfen ob CacheDirTeil1 im eintrag vorkommt. Falls ja löschen!
+            if (eintrag.string().find(CacheDirTeil1,0) != string::npos) {
+                bs::remove_all(eintrag);
+            }
+        }
+        delete cacheinhalt;
+
+        //Verzeichnis erstellen
         bs::create_directories(cachedir);
     }
     return ergebnis;
@@ -53,12 +67,15 @@ string cache::getCacheDir(string datei) {
 /**
  * Gibt den nicht vom Dateidatum abhängenden Teil des Cache-verzeichnisses zurück.
  */
-string cache::getCacheDirTeil1(string datei) {
+string cache::getCacheDirTeil1(vector<bs::path> *dateiliste) {
+    if (!CacheDirTeil1.empty())
+        //Falls schon mal bestimmt altes Ergebnis zurück geben
+        return CacheDirTeil1;
+
     string ergebnis = verzeichnis->string();
 
     //Vollständigen Pfad beschaffen
-    bs::path quelldatei(datei);
-    bs::path quelle_mit_dir = bs::complete(quelldatei);
+    bs::path quelle_mit_dir = bs::complete(dateiliste->at(0));
 
     //Slash entfernen
     string temp = quelle_mit_dir.string();
@@ -67,25 +84,38 @@ string cache::getCacheDirTeil1(string datei) {
     replace(temp.begin(),temp.end(),'/','_');
 
     ergebnis += temp;
+
+    CacheDirTeil1 = ergebnis;
     return ergebnis;
 }
 
 /**
  * Gibt den gesamten Namen des Cache-verzeichnisses zurück.
  */
-string cache::getCacheDirComplett(string datei) {
-    string ergebnis = getCacheDirTeil1(datei);
+string cache::getCacheDirComplett(vector<bs::path> *dateiliste) {
+    if (!CacheDirComplett.empty())
+        //Falls schon mal bestimmt altes Ergebnis zurück geben
+        return CacheDirComplett;
 
-    //Groesse und alter bestimmen
-    bs::path quelldatei(datei);
-    int size =  bs::file_size(quelldatei);
-    time_t zeit = bs::last_write_time(quelldatei);
+    string ergebnis = getCacheDirTeil1(dateiliste);
+
+    //Groesse und alter der dateien bestimmen und aufsummieren
+    int size = 0;
+    double zeit = 0;
+    
+    for (int i=0;i<dateiliste->size();i++) {
+        size +=  bs::file_size(dateiliste->at(i));
+        zeit += bs::last_write_time(dateiliste->at(i));
+    }
 
     stringstream temp2;
+    temp2.setf(ios_base::fixed, ios_base::floatfield);
+    temp2.precision(0);
     temp2 << ergebnis;
     temp2 << "__" << size << "__" << zeit;
     ergebnis = temp2.str();
 
+    CacheDirComplett = ergebnis;
     return ergebnis;
 }
 
@@ -93,7 +123,56 @@ string cache::getCacheDirComplett(string datei) {
  * Prüft ob diese Datei schon im Cache zu finden ist
  */
 bool cache::isInCache(vector<bs::path> *dateiliste) {
-    string datei = dateiliste->at(0).string();
-    bs::path quelldatei(getCacheDirComplett(datei));
+    bs::path quelldatei(getCacheDirComplett(dateiliste));
     return bs::exists(quelldatei);
+}
+
+/**
+ * wie ls
+ * Gibt eine Liste mit allen Einträgen in dem Übergebenen Verzeichnis zurück
+ * @param verzeichnis Das zu durchsuchende Verzeichnis
+ */
+vector<bs::path> *cache::getEintraegeInVerzeichnis(bs::path &verzeichnisname) {
+    string verzeichnis_str = verzeichnisname.string();
+
+    //Verzeichnis öffnen
+    DIR *verzeichnis_dir = opendir(verzeichnis_str.c_str());
+    if (verzeichnis_dir == NULL) {
+        cout << "FEHLER: Cache kann nicht durchsucht werden!" << endl;
+        return NULL;
+    }
+    //vector für die Einträge
+    vector<bs::path> *ergebnis = new vector<bs::path>();
+
+    //eintrag für die Benutzung mit readdir
+    dirent* eintrag;
+    while ((eintrag = readdir(verzeichnis_dir)) != NULL) {
+        ergebnis->push_back(bs::path(string(eintrag->d_name)));
+    }
+
+    //Verzeichnis wieder schließen
+    closedir(verzeichnis_dir);
+
+    return ergebnis;
+}
+
+/**
+ * Löscht Cache-Einträe, die älter als AlterInSek sind.
+ */
+void cache::AlteEintrageLoeschen(long AlterInSek) {
+    //Inhalt beschaffen
+    vector<bs::path> *cacheinhalt = getEintraegeInVerzeichnis(*verzeichnis);
+
+    //Aktuelle Systemzeit abfrage
+    time_t AktuelleZeit;
+    time(&AktuelleZeit);
+
+    //alle einträge prüfen, bei zwei starten, damit . und .. nicht berührt werden
+    for (int i=2;i<cacheinhalt->size();i++) {
+        bs::path eintrag = *verzeichnis;
+        eintrag /= cacheinhalt->at(i);
+        if ((AktuelleZeit - bs::last_write_time(eintrag)) > AlterInSek) {
+            bs::remove_all(eintrag);
+        }
+    }
 }

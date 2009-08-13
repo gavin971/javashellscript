@@ -11,6 +11,9 @@
 #include <string>
 #include <iostream>
 #include <boost/filesystem.hpp>
+#include <sys/types.h>
+#include <dirent.h>
+#include <time.h>
 
 using namespace std;
 namespace bs = boost::filesystem;
@@ -22,11 +25,15 @@ public:
     /** 
      * Gibt ein verzeichnis für die Compilierten dateien zurück
      */
-    string getCacheDir(string datei);
+    string getCacheDir(vector<bs::path> *dateiliste);
     /**
      * Gibt true zurück, wenn diese Datei schon im Cache ist
      */
     bool isInCache(vector<bs::path> *dateiliste);
+    /**
+     * Löscht Cache-Einträe, die älter als AlterInSek sind.
+     */
+    void AlteEintrageLoeschen(long AlterInSek);
 
 private:
     /** 
@@ -34,8 +41,12 @@ private:
      */
     boost::filesystem::path *verzeichnis;
 
-    string getCacheDirTeil1(string datei);
-    string getCacheDirComplett(string datei);
+    string getCacheDirTeil1(vector<bs::path> *dateiliste);
+    string getCacheDirComplett(vector<bs::path> *dateiliste);
+    string CacheDirTeil1;
+    string CacheDirComplett;
+
+    vector<bs::path> *getEintraegeInVerzeichnis(bs::path &verzeichnisname);
 
 };
 

@@ -46,6 +46,10 @@ public:
      * hier sollte der Inhalt der zweiten Zeile rein
      */
     string jvm_optionen;
+    /**
+     * Im Cache befindlichen Datei Ausführen
+     */
+    int Ausfuehren();
 private:
     /**
      * die Argumente der main-Funktion
@@ -71,6 +75,10 @@ private:
      * Liest die Quelldatei vollständig ein.
      */
     void QuelleEinlesen();
+    /** 
+     * Compiliert die Dateien im Temp-dir
+     */
+    int Compilieren();
 };
 
 #endif	/* _PREPROZESSOR_H */

@@ -23,6 +23,16 @@ preprozessor::preprozessor(int argc, char** argv) {
 
     //Dateiliste erstellen
     getDateiListe();
+
+    //prüfen, ob die Dateien im Cache noch aktuell sind
+    if (FehlerStatus != 0) return;
+    if (!Cache->isInCache(DateiListe)) {
+        //Die Dateien sind nicht im Cache, also neu prozessieren
+        prozess();
+        if (FehlerStatus != 0) return;
+        //jetzt Compilieren
+        Compilieren();
+    }
 }
 
 preprozessor::~preprozessor() {
@@ -117,7 +127,7 @@ void preprozessor::QuelleEinlesen() {
  * Entfernt das #! aus der ersten Zeile.
  * das #! wird vom Betriebssystem gebraucht, um jss zu starten, javac akzeptiert
  * es aber nicht, also weg damit.
- * @param datei Zeiger auf den Dateinamen
+ * Setzt den FehlerStatus auf 3 falls was schief geht.
  */
 void preprozessor::prozess() {
     //Ein und ausgabe Dateien
@@ -126,13 +136,14 @@ void preprozessor::prozess() {
     //Ziel öffnen
     string quelldatei = DateiListe->at(0).string();
 
-    string tempdir = Cache->getCacheDir(quelldatei) + "/";
+    string tempdir = Cache->getCacheDir(DateiListe) + "/";
     string zieldatei = tempdir + bs::basename(bs::path(quelldatei)) + ".java";
     ziel.open(zieldatei.c_str());
 
    //prüfen, ob das öffnen geklappt hat
     if (!ziel.is_open()) {
         cerr << "FEHLER: " << zieldatei << " konnte nicht geöffnet werden!" << endl;
+        FehlerStatus = 3;
         return;
     }
 
@@ -222,4 +233,42 @@ string preprozessor::getMainClass(char* argument) {
     mainklasse = bs::basename(datei);
     return mainklasse;
 }
+
+/**
+ * Java-dateien compilieren.
+ * Compiliert alle dateien im Temp-Dir.
+ * Setzt FehlerStatus auf 4 wenn was schief läuft
+ */
+int preprozessor::Compilieren() {
+    string tempdir = Cache->getCacheDir(DateiListe);
+    string komando = "javac " + tempdir + "/*.java";
+    int ergebnis = system(komando.c_str());
+    if (ergebnis != 0) FehlerStatus = 4;
+    return ergebnis;
+
+}
+
+/**
+ * Führt das Compilierte Programm aus.
+ * das compilierte Programm wird mit den übergebenden Parametern ausgeführt.
+ */
+int preprozessor::Ausfuehren() {
+    string tempdir = Cache->getCacheDir(DateiListe);
+    string komando = "java " + jvm_optionen + " -cp " + tempdir;
+
+    //der name der Main-Klasse ist der Dateiname im Argument 1
+    string mainklasse = getMainClass(Argumente[1]);
+
+    //Mainklasse anhängen
+    komando += " " + mainklasse;
+
+    //Argumente anhängen
+    for (int i=2;i<AnzahlDerArgumente;i++) {
+        komando += " " + string(Argumente[i]);
+    }
+
+    //Ausführen
+    return system(komando.c_str());
+}
+
 
