@@ -181,13 +181,16 @@ void preprozessor::prozess() {
         }
 
         //Standard-Klassen importieren
-        ziel << "import java.util.*; import java.io.*; ";
+        ziel << "import java.util.*; import java.io.*; import javax.swing.*; ";
 
         //Klasse erzeugen
         ziel << "public class " << mainklasse << "{ ";
 
         //Mainfunktion
         ziel << "public static void main(String[] args) { ";
+
+        //Das System-Look-And-Feel soll verwendet werden
+        ziel << "try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); } catch(Exception e) {} ";
 
         //Konstructor für Klasse (damit auch nicht statische Funktionen aufgerufen
         //werden können

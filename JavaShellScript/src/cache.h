@@ -34,6 +34,11 @@ public:
      * Löscht Cache-Einträe, die älter als AlterInSek sind.
      */
     void AlteEintrageLoeschen(long AlterInSek);
+    /**
+     * Löscht den Aktuellen Eintrag, nachdem zum Beispiel beim Compilieren 
+     * Was schief gegangen ist
+     */
+    void AktuellenEintragLoeschen();
 
 private:
     /** 

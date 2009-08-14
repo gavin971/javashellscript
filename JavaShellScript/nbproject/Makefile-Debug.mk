@@ -59,15 +59,18 @@ dist/Debug/${PLATFORM}/jss: ${OBJECTFILES}
 
 ${OBJECTDIR}/src/jss.o: src/jss.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
-	$(COMPILE.cc) -g -I../../boost_1_37_0/include/boost-1_37 -o ${OBJECTDIR}/src/jss.o src/jss.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../../boost_1_37_0/include/boost-1_37 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/jss.o src/jss.cpp
 
 ${OBJECTDIR}/src/cache.o: src/cache.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
-	$(COMPILE.cc) -g -I../../boost_1_37_0/include/boost-1_37 -o ${OBJECTDIR}/src/cache.o src/cache.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../../boost_1_37_0/include/boost-1_37 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/cache.o src/cache.cpp
 
 ${OBJECTDIR}/src/preprozessor.o: src/preprozessor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
-	$(COMPILE.cc) -g -I../../boost_1_37_0/include/boost-1_37 -o ${OBJECTDIR}/src/preprozessor.o src/preprozessor.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I../../boost_1_37_0/include/boost-1_37 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/preprozessor.o src/preprozessor.cpp
 
 # Subprojects
 .build-subprojects:
@@ -79,3 +82,8 @@ ${OBJECTDIR}/src/preprozessor.o: src/preprozessor.cpp
 
 # Subprojects
 .clean-subprojects:
+
+# Enable dependency checking
+.dep.inc: .depcheck-impl
+
+include .dep.inc

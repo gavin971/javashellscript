@@ -107,5 +107,36 @@
         <itemTool>3</itemTool>
       </item>
     </conf>
+    <conf name="Debug_Linux" type="1">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <compilerSet>GNU|GNU</compilerSet>
+        <platform>2</platform>
+      </toolsSet>
+      <compileType>
+        <linkerTool>
+          <output>dist/Debug/${PLATFORM}/jss</output>
+          <linkerLibItems>
+            <linkerLibFileItem>/usr/lib/libboost_filesystem.a</linkerLibFileItem>
+            <linkerLibFileItem>/usr/lib/libboost_system.a</linkerLibFileItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="src/cache.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/cache.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/jss.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/preprozessor.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/preprozessor.h">
+        <itemTool>3</itemTool>
+      </item>
+    </conf>
   </confs>
 </configurationDescriptor>
