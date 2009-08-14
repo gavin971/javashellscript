@@ -6,6 +6,7 @@
  */
 
 #include <sstream>
+#include <boost/filesystem/operations.hpp>
 
 #include "cache.h"
 
@@ -174,5 +175,15 @@ void cache::AlteEintrageLoeschen(long AlterInSek) {
         if ((AktuelleZeit - bs::last_write_time(eintrag)) > AlterInSek) {
             bs::remove_all(eintrag);
         }
+    }
+}
+
+/**
+ * Löscht den Aktuellen Eintrag, nachdem zum Beispiel beim Compilieren
+ * Was schief gegangen ist
+ */
+void cache::AktuellenEintragLoeschen() {
+    if (!CacheDirComplett.empty()) {
+        bs::remove_all(bs::path(CacheDirComplett));
     }
 }

@@ -73,6 +73,9 @@ int main(int argc, char** argv) {
 
     //Falls es probleme gab, raus hier!
     if (Pp->getFehlerStatus() != 0) {
+        //Den Cache-Eintrag löschen, falls schon vorhanden
+        Pp->Cache->AktuellenEintragLoeschen();
+        //Programm beenden
         return (EXIT_FAILURE);
     }
     
