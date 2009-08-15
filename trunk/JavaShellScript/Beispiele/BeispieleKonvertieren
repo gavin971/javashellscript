@@ -26,7 +26,8 @@ public class BeispieleKonvertieren {
             samplesdir.mkdir();
 
             //Schleife über alle Einträge
-            for (int i=0;i<dateien.length;i++) {
+            for (int i=0;i<dateien.length;i++)
+            if (dateien[i].contains(".java")) {
                 BufferedReader quelle = new BufferedReader(new FileReader(srcdir.getName()+"/"+dateien[i]));
                 String basename = dateien[i].substring(0, dateien[i].indexOf("."));
                 String Zielname = samplesdir.getName() + "/" +basename;
