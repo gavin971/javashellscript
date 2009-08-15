@@ -40,6 +40,8 @@ public:
      */
     void AktuellenEintragLoeschen();
 
+
+    vector<bs::path> *getEintraegeInVerzeichnis(bs::path &verzeichnisname);
 private:
     /** 
      * Name des cache-Verzeichnisses des aktuellen Benutzers
@@ -50,8 +52,6 @@ private:
     string getCacheDirComplett(vector<bs::path> *dateiliste);
     string CacheDirTeil1;
     string CacheDirComplett;
-
-    vector<bs::path> *getEintraegeInVerzeichnis(bs::path &verzeichnisname);
 
 };
 

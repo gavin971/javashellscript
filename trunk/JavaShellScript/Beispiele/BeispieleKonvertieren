@@ -1,0 +1,57 @@
+#!/usr/bin/env jss
+#option -Dfile.encoding=UTF8
+
+import java.io.*;
+
+
+/**
+ * Dieses Script Kopiert die Dateien aus dem src-verzeichnis in das
+ * samples-verzeichnis und ändert dabei die Konfigurationszeilen
+ */
+
+public class BeispieleKonvertieren {
+
+    public BeispieleKonvertieren() {
+        try {
+            File srcdir = new File("src");
+            File samplesdir = new File("samples");
+
+            //Einträge des quell-Verzeichnis
+            String[] dateien = srcdir.list();
+
+            //altes verzeichnis löschen
+            Runtime.getRuntime().exec("rm -rf samples");
+
+            //neues verzeichnis anlegen
+            samplesdir.mkdir();
+
+            //Schleife über alle Einträge
+            for (int i=0;i<dateien.length;i++) {
+                BufferedReader quelle = new BufferedReader(new FileReader(srcdir.getName()+"/"+dateien[i]));
+                String basename = dateien[i].substring(0, dateien[i].indexOf("."));
+                String Zielname = samplesdir.getName() + "/" +basename;
+                PrintWriter ziel = new PrintWriter(Zielname);
+
+                //Anzeigen was geht
+                System.out.println(srcdir.getName()+"/"+dateien[i]+ "  -->  " + Zielname);
+
+                //schleife über die ganze datei
+                String zeile;
+                while ((zeile = quelle.readLine()) != null) {
+                    if (zeile.startsWith("//#"))
+                        zeile = zeile.substring(2);
+                    ziel.println(zeile);
+                }
+                ziel.close();
+                quelle.close();
+
+                //Ausführbar machen
+                Runtime.getRuntime().exec("chmod +x " + Zielname);
+            }
+        } catch (Exception e) {e.printStackTrace();}
+    }    
+    
+    public static void main(String [] args) {
+        new BeispieleKonvertieren();
+    }
+}
