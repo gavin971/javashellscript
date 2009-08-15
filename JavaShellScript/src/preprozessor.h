@@ -15,6 +15,8 @@
 #include <iostream>
 #include <fstream>
 #include <boost/filesystem.hpp>
+#include <CoreFoundation/CoreFoundation.h>
+#include <unistd.h>
 #include "cache.h"
 
 using namespace std;
@@ -46,6 +48,7 @@ public:
      * hier sollte der Inhalt der zweiten Zeile rein
      */
     string jvm_optionen;
+    string classpath;
     /**
      * Im Cache befindlichen Datei Ausführen
      */
@@ -79,6 +82,13 @@ private:
      * Compiliert die Dateien im Temp-dir
      */
     int Compilieren();
+
+    void addLibToClasspath();
+    /**
+     * Gibt das Verzeichnis der jss-Datei zurück, muss für jedes Betriebssystem
+     * extra implementiert werden
+     */
+    string GetPathName();
 };
 
 #endif	/* _PREPROZESSOR_H */

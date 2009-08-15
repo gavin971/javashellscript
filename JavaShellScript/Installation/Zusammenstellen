@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#Falls es schon ein Verzeichnis gibt, löschen.
+rm -rf jss
+
+#neues Verzeichnis erstellen
+mkdir jss
+mkdir jss/lib
+
+#Bibliothekten kopieren
+cp ../jsslib/*.jar jss/lib/.
+
+#jss copieren
+cp ../dist/jss jss/jss
+
+#Beispiele Konvertieren
+cd ../Beispiele
+./BeispieleKonvertieren
+cd ../Installation
+
+#Beispiele verschieben
+mv ../Beispiele/samples jss/.
+

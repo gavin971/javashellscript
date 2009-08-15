@@ -9,7 +9,7 @@ TOP=`pwd`
 PLATFORM=GNU-MacOSX
 TMPDIR=build/Release/${PLATFORM}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=dist/Release/${PLATFORM}/jss
+OUTPUT_PATH=dist/jss
 OUTPUT_BASENAME=jss
 PACKAGE_TOP_DIR=javashellscript/
 
