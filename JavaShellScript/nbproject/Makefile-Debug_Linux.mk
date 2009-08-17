@@ -30,6 +30,7 @@ OBJECTDIR=build/Debug_Linux/${PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/src/jss.o \
 	${OBJECTDIR}/src/cache.o \
+	${OBJECTDIR}/src/config.o \
 	${OBJECTDIR}/src/preprozessor.o
 
 # C Compiler Flags
@@ -59,18 +60,19 @@ dist/jss: ${OBJECTFILES}
 
 ${OBJECTDIR}/src/jss.o: src/jss.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.cc) -g -DLINUX -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/jss.o src/jss.cpp
+	$(COMPILE.cc) -g -DLINUX -o ${OBJECTDIR}/src/jss.o src/jss.cpp
 
 ${OBJECTDIR}/src/cache.o: src/cache.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.cc) -g -DLINUX -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/cache.o src/cache.cpp
+	$(COMPILE.cc) -g -DLINUX -o ${OBJECTDIR}/src/cache.o src/cache.cpp
+
+${OBJECTDIR}/src/config.o: src/config.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	$(COMPILE.cc) -g -DLINUX -o ${OBJECTDIR}/src/config.o src/config.cpp
 
 ${OBJECTDIR}/src/preprozessor.o: src/preprozessor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.cc) -g -DLINUX -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/preprozessor.o src/preprozessor.cpp
+	$(COMPILE.cc) -g -DLINUX -o ${OBJECTDIR}/src/preprozessor.o src/preprozessor.cpp
 
 # Subprojects
 .build-subprojects:
@@ -82,8 +84,3 @@ ${OBJECTDIR}/src/preprozessor.o: src/preprozessor.cpp
 
 # Subprojects
 .clean-subprojects:
-
-# Enable dependency checking
-.dep.inc: .depcheck-impl
-
-include .dep.inc

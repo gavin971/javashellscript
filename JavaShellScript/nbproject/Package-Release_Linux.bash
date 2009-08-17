@@ -50,7 +50,7 @@ function copyFileToTmpDir
 
 # Setup
 cd "${TOP}"
-mkdir -p dist/Debug_Linux/${PLATFORM}/package
+mkdir -p dist/Release_Linux/${PLATFORM}/package
 rm -rf ${TMPDIR}
 mkdir -p ${TMPDIR}
 
@@ -62,9 +62,9 @@ copyFileToTmpDir "${OUTPUT_PATH}" "${TMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASE
 
 # Generate tar file
 cd "${TOP}"
-rm -f dist/Debug_Linux/${PLATFORM}/package/javashellscript.tar
+rm -f dist/Release_Linux/${PLATFORM}/package/javashellscript.tar
 cd ${TMPDIR}
-tar -vcf ../../../../dist/Debug_Linux/${PLATFORM}/package/javashellscript.tar *
+tar -vcf ../../../../dist/Release_Linux/${PLATFORM}/package/javashellscript.tar *
 checkReturnCode
 
 # Cleanup

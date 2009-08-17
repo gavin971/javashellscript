@@ -13,6 +13,7 @@
 
 //der Cache speichert compilierte Dateien bis zu einem bestimmten alter
 #include "cache.h"
+#include "config.h"
 #include "preprozessor.h"
 
 using namespace std;
@@ -23,6 +24,11 @@ namespace bs = boost::filesystem;
  * Zeiger auf den Preprozessor
  */
 preprozessor *Pp;
+
+/**
+ * Zeiger auf die Konfiguration
+ */
+config *conf;
 
 /**
  * Anleitung ausgeben.
@@ -67,9 +73,12 @@ int main(int argc, char** argv) {
         return (EXIT_SUCCESS);
     }
 
+    //Config-Objekt erzeugen
+    conf = new config();
+
     //Preprozessor initialisieren
     //Dabei werden die Dateien in den Cache kopiert und Compiliert
-    Pp = new preprozessor(argc, argv);
+    Pp = new preprozessor(argc, argv, conf);
 
     //Falls es probleme gab, raus hier!
     if (Pp->getFehlerStatus() != 0) {

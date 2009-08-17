@@ -27,11 +27,11 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=JavaShellScript
 
 # Active Configuration
-DEFAULTCONF=Debug
+DEFAULTCONF=Debug_Mac
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=Debug Release Debug_Linux Release_Linux 
+ALLCONFS=Debug_Mac Release_Mac Debug_Linux Release_Linux 
 
 
 # build

@@ -5,10 +5,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFDataFormatter;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator.CellValue;
@@ -145,34 +143,39 @@ public class ExcelReader {
                 if (zelle != null) {
                     CellValue wert = evaluator.evaluate(zelle);
 
-                    switch (wert.getCellType()) {
-                        case HSSFCell.CELL_TYPE_BLANK:
-                            text = String.format(formatvorn + "s" + formathinten, "");
-                            break;
-                        case HSSFCell.CELL_TYPE_BOOLEAN:
-                            text = String.format(formatvorn + "b" + formathinten, wert.getBooleanValue());
-                            break;
-                        case HSSFCell.CELL_TYPE_ERROR:
-                            text = String.format(formatvorn + "s" + formathinten, "ERROR");
-                            break;
-                        case HSSFCell.CELL_TYPE_NUMERIC:
-                            //prüfen, ob es sich um ein Spezielles Format handelt
-                            Format dataformat = formater.createFormat(zelle);
-                            if (dataformat != null) {
-                                //datum selbst formatieren
-                                if (dataformat instanceof SimpleDateFormat) {
-                                    text = String.format(formatvorn + "tF" + formathinten, zelle.getDateCellValue());
-                                } else {
-                                    text = String.format(formatvorn + "s" + formathinten, formater.formatCellValue(zelle,evaluator));
-                                }
-                            } else
-                                //kein besonderes Format
-                                text = String.format(Locale.ENGLISH, formatvorn + "f" + formathinten, wert.getNumberValue());
-                            break;
-                        case HSSFCell.CELL_TYPE_STRING:
-                            text = String.format(formatvorn + "s" + formathinten, wert.getStringValue());
-                            break;
+                    if (wert != null) {
+                        switch (wert.getCellType()) {
+                            case HSSFCell.CELL_TYPE_BLANK:
+                                text = String.format(formatvorn + "s" + formathinten, "");
+                                break;
+                            case HSSFCell.CELL_TYPE_BOOLEAN:
+                                text = String.format(formatvorn + "b" + formathinten, wert.getBooleanValue());
+                                break;
+                            case HSSFCell.CELL_TYPE_ERROR:
+                                text = String.format(formatvorn + "s" + formathinten, "ERROR");
+                                break;
+                            case HSSFCell.CELL_TYPE_NUMERIC:
+                                //prüfen, ob es sich um ein Spezielles Format handelt
+                                Format dataformat = formater.createFormat(zelle);
+                                if (dataformat != null) {
+                                    //datum selbst formatieren
+                                    if (dataformat instanceof SimpleDateFormat) {
+                                        text = String.format(formatvorn + "tF" + formathinten, zelle.getDateCellValue());
+                                    } else {
+                                        text = String.format(formatvorn + "s" + formathinten, formater.formatCellValue(zelle,evaluator));
+                                    }
+                                } else
+                                    //kein besonderes Format
+                                    text = String.format(Locale.ENGLISH, formatvorn + "f" + formathinten, wert.getNumberValue());
+                                break;
+                            case HSSFCell.CELL_TYPE_STRING:
+                                text = String.format(formatvorn + "s" + formathinten, wert.getStringValue());
+                                break;
+                        }
+                    } else {
+                        text = String.format(formatvorn + "s" + formathinten, "NULL");
                     }
+                    
                 } else {
                     text = String.format(formatvorn + "s" + formathinten, "");
                 }
