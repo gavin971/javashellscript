@@ -18,13 +18,13 @@ CXX=g++
 FC=gfortran
 
 # Macros
-PLATFORM=GNU-MacOSX
+PLATFORM=GNU-Linux-x86
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/Release/${PLATFORM}
+OBJECTDIR=build/Release_Linux/${PLATFORM}
 
 # Object Files
 OBJECTFILES= \
@@ -43,42 +43,42 @@ CXXFLAGS=
 FFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xgcc40-mt.a /Users/robert/Programm/boost_1_37_0/lib/x86/libboost_system-xgcc40-mt.a
+LDLIBSOPTIONS=/usr/lib/libboost_filesystem.a /usr/lib/libboost_system.a
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	${MAKE}  -f nbproject/Makefile-Release.mk dist/Release/${PLATFORM}/jss
+	${MAKE}  -f nbproject/Makefile-Release_Linux.mk dist/jss
 
-dist/Release/${PLATFORM}/jss: /Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xgcc40-mt.a
+dist/jss: /usr/lib/libboost_filesystem.a
 
-dist/Release/${PLATFORM}/jss: /Users/robert/Programm/boost_1_37_0/lib/x86/libboost_system-xgcc40-mt.a
+dist/jss: /usr/lib/libboost_system.a
 
-dist/Release/${PLATFORM}/jss: ${OBJECTFILES}
-	${MKDIR} -p dist/Release/${PLATFORM}
-	${LINK.cc} -o dist/Release/${PLATFORM}/jss -Wl,-S ${OBJECTFILES} ${LDLIBSOPTIONS} 
+dist/jss: ${OBJECTFILES}
+	${MKDIR} -p dist
+	${LINK.cc} -o dist/jss -s ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 ${OBJECTDIR}/src/jss.o: src/jss.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -s -I../../boost_1_37_0/include/boost-1_37 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/jss.o src/jss.cpp
+	$(COMPILE.cc) -g -DLINUX -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/jss.o src/jss.cpp
 
 ${OBJECTDIR}/src/cache.o: src/cache.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -s -I../../boost_1_37_0/include/boost-1_37 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/cache.o src/cache.cpp
+	$(COMPILE.cc) -g -DLINUX -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/cache.o src/cache.cpp
 
 ${OBJECTDIR}/src/preprozessor.o: src/preprozessor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -s -I../../boost_1_37_0/include/boost-1_37 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/preprozessor.o src/preprozessor.cpp
+	$(COMPILE.cc) -g -DLINUX -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/preprozessor.o src/preprozessor.cpp
 
 # Subprojects
 .build-subprojects:
 
 # Clean Targets
 .clean-conf:
-	${RM} -r build/Release
-	${RM} dist/Release/${PLATFORM}/jss
+	${RM} -r build/Release_Linux
+	${RM} dist/jss
 
 # Subprojects
 .clean-subprojects:

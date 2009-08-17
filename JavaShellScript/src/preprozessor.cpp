@@ -344,8 +344,8 @@ void preprozessor::addLibToClasspath() {
  * Gibt das Verzeichnis der jss-Datei zurück, muss für jedes Betriebssystem
  * extra implementiert werden
  */
-string preprozessor::GetPathName()
-{
+#ifdef MACOS
+string preprozessor::GetPathName() {
     char path[1024];
     CFBundleRef mainBundle = CFBundleGetMainBundle();
     if(!mainBundle)
@@ -366,5 +366,16 @@ string preprozessor::GetPathName()
 
     return std::string(path);
 }
-
-
+#endif
+#ifdef LINUX
+string preprozessor::GetPathName() {
+    string procexe = string("/proc/self/exe");
+    char buf[1024];
+    ssize_t len;
+    if ((len = readlink(procexe.c_str(), buf, sizeof(buf)-1)) != -1)
+        buf[len] = '\0';
+    if (len == -1) return "";
+    bs::path exename = bs::path(string(buf));
+    return exename.remove_filename().directory_string();
+}
+#endif

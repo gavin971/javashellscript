@@ -47,15 +47,15 @@ LDLIBSOPTIONS=/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xg
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	${MAKE}  -f nbproject/Makefile-Debug.mk dist/jss
+	${MAKE}  -f nbproject/Makefile-Debug.mk dist/Debug/${PLATFORM}/jss
 
-dist/jss: /Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xgcc40-mt.a
+dist/Debug/${PLATFORM}/jss: /Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xgcc40-mt.a
 
-dist/jss: /Users/robert/Programm/boost_1_37_0/lib/x86/libboost_system-xgcc40-mt.a
+dist/Debug/${PLATFORM}/jss: /Users/robert/Programm/boost_1_37_0/lib/x86/libboost_system-xgcc40-mt.a
 
-dist/jss: ${OBJECTFILES}
-	${MKDIR} -p dist
-	${LINK.cc} -o dist/jss ${OBJECTFILES} ${LDLIBSOPTIONS} 
+dist/Debug/${PLATFORM}/jss: ${OBJECTFILES}
+	${MKDIR} -p dist/Debug/${PLATFORM}
+	${LINK.cc} -o dist/Debug/${PLATFORM}/jss ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 ${OBJECTDIR}/src/jss.o: src/jss.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -78,7 +78,7 @@ ${OBJECTDIR}/src/preprozessor.o: src/preprozessor.cpp
 # Clean Targets
 .clean-conf:
 	${RM} -r build/Debug
-	${RM} dist/jss
+	${RM} dist/Debug/${PLATFORM}/jss
 
 # Subprojects
 .clean-subprojects:

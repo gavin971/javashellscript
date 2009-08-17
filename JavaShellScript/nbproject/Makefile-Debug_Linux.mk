@@ -47,27 +47,30 @@ LDLIBSOPTIONS=/usr/lib/libboost_filesystem.a /usr/lib/libboost_system.a
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	${MAKE}  -f nbproject/Makefile-Debug_Linux.mk dist/Debug/${PLATFORM}/jss
+	${MAKE}  -f nbproject/Makefile-Debug_Linux.mk dist/jss
 
-dist/Debug/${PLATFORM}/jss: /usr/lib/libboost_filesystem.a
+dist/jss: /usr/lib/libboost_filesystem.a
 
-dist/Debug/${PLATFORM}/jss: /usr/lib/libboost_system.a
+dist/jss: /usr/lib/libboost_system.a
 
-dist/Debug/${PLATFORM}/jss: ${OBJECTFILES}
-	${MKDIR} -p dist/Debug/${PLATFORM}
-	${LINK.cc} -o dist/Debug/${PLATFORM}/jss ${OBJECTFILES} ${LDLIBSOPTIONS} 
+dist/jss: ${OBJECTFILES}
+	${MKDIR} -p dist
+	${LINK.cc} -o dist/jss ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 ${OBJECTDIR}/src/jss.o: src/jss.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
-	$(COMPILE.cc) -g -o ${OBJECTDIR}/src/jss.o src/jss.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -DLINUX -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/jss.o src/jss.cpp
 
 ${OBJECTDIR}/src/cache.o: src/cache.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
-	$(COMPILE.cc) -g -o ${OBJECTDIR}/src/cache.o src/cache.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -DLINUX -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/cache.o src/cache.cpp
 
 ${OBJECTDIR}/src/preprozessor.o: src/preprozessor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
-	$(COMPILE.cc) -g -o ${OBJECTDIR}/src/preprozessor.o src/preprozessor.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -DLINUX -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/preprozessor.o src/preprozessor.cpp
 
 # Subprojects
 .build-subprojects:
@@ -75,7 +78,12 @@ ${OBJECTDIR}/src/preprozessor.o: src/preprozessor.cpp
 # Clean Targets
 .clean-conf:
 	${RM} -r build/Debug_Linux
-	${RM} dist/Debug/${PLATFORM}/jss
+	${RM} dist/jss
 
 # Subprojects
 .clean-subprojects:
+
+# Enable dependency checking
+.dep.inc: .depcheck-impl
+
+include .dep.inc

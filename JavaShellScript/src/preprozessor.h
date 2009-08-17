@@ -15,9 +15,13 @@
 #include <iostream>
 #include <fstream>
 #include <boost/filesystem.hpp>
-#include <CoreFoundation/CoreFoundation.h>
 #include <unistd.h>
 #include "cache.h"
+
+//Für den Mac
+#ifdef MACOS
+#include <CoreFoundation/CoreFoundation.h>
+#endif
 
 using namespace std;
 namespace bs = boost::filesystem;
