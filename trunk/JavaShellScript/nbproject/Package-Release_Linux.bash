@@ -7,7 +7,7 @@
 # Macros
 TOP=`pwd`
 PLATFORM=GNU-Linux-x86
-TMPDIR=build/Debug_Linux/${PLATFORM}/tmp-packaging
+TMPDIR=build/Release_Linux/${PLATFORM}/tmp-packaging
 TMPDIRNAME=tmp-packaging
 OUTPUT_PATH=dist/jss
 OUTPUT_BASENAME=jss

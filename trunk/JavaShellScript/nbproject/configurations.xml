@@ -23,7 +23,6 @@
                    projectFiles="false">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
-    <itemPath>jss.conf</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -32,7 +31,6 @@
         <developmentServer>localhost</developmentServer>
         <compilerSet>GNU|GNU</compilerSet>
         <platform>4</platform>
-        <dependencyChecking>true</dependencyChecking>
       </toolsSet>
       <compileType>
         <ccCompilerTool>
@@ -41,16 +39,13 @@
           </includeDirectories>
         </ccCompilerTool>
         <linkerTool>
-          <output>dist/jss</output>
+          <output>dist/Debug/${PLATFORM}/jss</output>
           <linkerLibItems>
             <linkerLibFileItem>/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xgcc40-mt.a</linkerLibFileItem>
             <linkerLibFileItem>/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_system-xgcc40-mt.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="jss.conf">
-        <itemTool>3</itemTool>
-      </item>
       <item path="src/cache.cpp">
         <itemTool>1</itemTool>
       </item>
@@ -72,7 +67,6 @@
         <developmentServer>localhost</developmentServer>
         <compilerSet>GNU|GNU</compilerSet>
         <platform>4</platform>
-        <dependencyChecking>true</dependencyChecking>
       </toolsSet>
       <compileType>
         <cCompilerTool>
@@ -89,18 +83,14 @@
           <developmentMode>5</developmentMode>
         </fortranCompilerTool>
         <linkerTool>
-          <output>dist/jss</output>
+          <output>dist/Release/${PLATFORM}/jss</output>
           <stripSymbols>true</stripSymbols>
           <linkerLibItems>
             <linkerLibFileItem>/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xgcc40-mt.a</linkerLibFileItem>
             <linkerLibFileItem>/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_system-xgcc40-mt.a</linkerLibFileItem>
           </linkerLibItems>
-          <commandLine>-framework CoreFoundation</commandLine>
         </linkerTool>
       </compileType>
-      <item path="jss.conf">
-        <itemTool>3</itemTool>
-      </item>
       <item path="src/cache.cpp">
         <itemTool>1</itemTool>
       </item>
@@ -124,17 +114,58 @@
         <platform>2</platform>
       </toolsSet>
       <compileType>
+        <ccCompilerTool>
+          <preprocessorList>
+            <Elem>LINUX</Elem>
+          </preprocessorList>
+        </ccCompilerTool>
         <linkerTool>
-          <output>dist/Debug/${PLATFORM}/jss</output>
+          <output>dist/jss</output>
           <linkerLibItems>
             <linkerLibFileItem>/usr/lib/libboost_filesystem.a</linkerLibFileItem>
             <linkerLibFileItem>/usr/lib/libboost_system.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="jss.conf">
+      <item path="src/cache.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/cache.h">
         <itemTool>3</itemTool>
       </item>
+      <item path="src/jss.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/preprozessor.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/preprozessor.h">
+        <itemTool>3</itemTool>
+      </item>
+    </conf>
+    <conf name="Release_Linux" type="1">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <compilerSet>GNU|GNU</compilerSet>
+        <platform>2</platform>
+      </toolsSet>
+      <compileType>
+        <ccCompilerTool>
+          <developmentMode>6</developmentMode>
+          <stripSymbols>true</stripSymbols>
+          <preprocessorList>
+            <Elem>LINUX</Elem>
+          </preprocessorList>
+        </ccCompilerTool>
+        <linkerTool>
+          <output>dist/jss</output>
+          <stripSymbols>true</stripSymbols>
+          <linkerLibItems>
+            <linkerLibFileItem>/usr/lib/libboost_filesystem.a</linkerLibFileItem>
+            <linkerLibFileItem>/usr/lib/libboost_system.a</linkerLibFileItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
       <item path="src/cache.cpp">
         <itemTool>1</itemTool>
       </item>
