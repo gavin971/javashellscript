@@ -11,6 +11,7 @@ mkdir jss/lib
 cp ../jsslib/*.jar jss/lib/.
 
 #jss copieren
+cp ../jss.conf jss/jss.conf
 cp ../dist/jss jss/jss
 
 #Beispiele Konvertieren

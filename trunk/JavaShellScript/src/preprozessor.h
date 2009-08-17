@@ -17,11 +17,7 @@
 #include <boost/filesystem.hpp>
 #include <unistd.h>
 #include "cache.h"
-
-//Für den Mac
-#ifdef MACOS
-#include <CoreFoundation/CoreFoundation.h>
-#endif
+#include "config.h"
 
 using namespace std;
 namespace bs = boost::filesystem;
@@ -34,7 +30,7 @@ public:
      */
     cache *Cache;
 
-    preprozessor(int argc, char** argv);
+    preprozessor(int argc, char** argv, config* co);
     virtual ~preprozessor();
     vector<bs::path> *getDateiListe();
     /**
@@ -63,6 +59,10 @@ private:
      */
     int AnzahlDerArgumente;
     char** Argumente;
+    /**
+     * Zeiger auf die Konfiguration, wird mit dem Konstructor übergeben
+     */
+    config* conf;
     /**
      * Diese Liste enthält alle beteiligten Dateien, nach einem aufruf von
      * getDateiListe();

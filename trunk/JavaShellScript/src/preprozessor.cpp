@@ -10,7 +10,7 @@
 
 #include "preprozessor.h"
 
-preprozessor::preprozessor(int argc, char** argv) {
+preprozessor::preprozessor(int argc, char** argv, config* co) {
     //cache initialisieren
     Cache = new cache();
     //die Dateiliste muss durch getDateiListe innitialisiert werden.
@@ -24,6 +24,8 @@ preprozessor::preprozessor(int argc, char** argv) {
     //keine Optionen
     jvm_optionen = "";
     classpath = "";
+    //Konfiguration übernehmen
+    conf = co;
 
     //die dateien im lib-verzeichnis zum classpath hinzufügen
     addLibToClasspath();
@@ -275,7 +277,7 @@ int preprozessor::Compilieren() {
     //mit übernommen werden
     string cp = "";
     if (!classpath.empty()) cp = "-cp "+classpath;
-    string komando = "javac " + cp + " " + tempdir + "/*.java";
+    string komando = conf->getJavacExe() + " " + cp + " " + tempdir + "/*.java";
     int ergebnis = system(komando.c_str());
     if (ergebnis != 0) FehlerStatus = 4;
     return ergebnis;
@@ -288,7 +290,7 @@ int preprozessor::Compilieren() {
  */
 int preprozessor::Ausfuehren() {
     string tempdir = Cache->getCacheDir(DateiListe);
-    string komando = "java " + jvm_optionen + " -cp " + tempdir;
+    string komando = conf->getJavaExe() + " " + jvm_optionen + " -cp " + tempdir;
     if (!classpath.empty()) komando += ":" + classpath;
 
     //der name der Main-Klasse ist der Dateiname im Argument 1
@@ -310,22 +312,7 @@ int preprozessor::Ausfuehren() {
  * Fügt die jar-dateien im Lib-Verzeichnis zum Classpath hinzu
  */
 void preprozessor::addLibToClasspath() {
-    string jssdir = GetPathName();
-
-    //prüfen ob jssdir ein link ist, ja ja folgen bis zur eigentlichen datei
-    bs::path jsspath(jssdir+"/jss");
-    while (bs::is_symlink(jsspath)) {
-        char buf[1024];
-        ssize_t len;
-        if ((len = readlink(jsspath.directory_string().c_str(), buf, sizeof(buf)-1)) != -1)
-            buf[len] = '\0';
-        if (len == -1) return;
-        string neuedatei(buf);
-        jsspath = bs::path(neuedatei);
-    }
-    jsspath = jsspath.remove_filename();
-
-    bs::path libdir = jsspath /= bs::path("lib");
+    bs::path libdir = bs::path(conf->getJssPath()) /= bs::path("lib");
     //der Cache verfügt über eine Funktion um verzeichniseinträge zu finden
     vector<bs::path> *libs = Cache->getEintraegeInVerzeichnis(libdir);
 
@@ -339,43 +326,3 @@ void preprozessor::addLibToClasspath() {
         }
     }
 }
-
-/**
- * Gibt das Verzeichnis der jss-Datei zurück, muss für jedes Betriebssystem
- * extra implementiert werden
- */
-#ifdef MACOS
-string preprozessor::GetPathName() {
-    char path[1024];
-    CFBundleRef mainBundle = CFBundleGetMainBundle();
-    if(!mainBundle)
-	    return "";
-
-    CFURLRef mainBundleURL = CFBundleCopyBundleURL(mainBundle);
-	if(!mainBundleURL)
-		return "";
-
-    CFStringRef cfStringRef = CFURLCopyFileSystemPath(mainBundleURL, kCFURLPOSIXPathStyle);
-	if(!cfStringRef)
-		return "";
-
-    CFStringGetCString(cfStringRef, path, 1024, kCFStringEncodingASCII);
-
-    CFRelease(mainBundleURL);
-    CFRelease(cfStringRef);
-
-    return std::string(path);
-}
-#endif
-#ifdef LINUX
-string preprozessor::GetPathName() {
-    string procexe = string("/proc/self/exe");
-    char buf[1024];
-    ssize_t len;
-    if ((len = readlink(procexe.c_str(), buf, sizeof(buf)-1)) != -1)
-        buf[len] = '\0';
-    if (len == -1) return "";
-    bs::path exename = bs::path(string(buf));
-    return exename.remove_filename().directory_string();
-}
-#endif

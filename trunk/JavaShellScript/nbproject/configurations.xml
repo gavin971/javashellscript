@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>src/cache.h</itemPath>
+      <itemPath>src/config.h</itemPath>
       <itemPath>src/preprozessor.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -15,6 +16,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>src/cache.cpp</itemPath>
+      <itemPath>src/config.cpp</itemPath>
       <itemPath>src/jss.cpp</itemPath>
       <itemPath>src/preprozessor.cpp</itemPath>
     </logicalFolder>
@@ -26,7 +28,7 @@
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
-    <conf name="Debug" type="1">
+    <conf name="Debug_Mac" type="1">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>GNU|GNU</compilerSet>
@@ -37,19 +39,29 @@
           <includeDirectories>
             <directoryPath>../../boost_1_37_0/include/boost-1_37</directoryPath>
           </includeDirectories>
+          <preprocessorList>
+            <Elem>MACOS</Elem>
+          </preprocessorList>
         </ccCompilerTool>
         <linkerTool>
-          <output>dist/Debug/${PLATFORM}/jss</output>
+          <output>dist/jss</output>
           <linkerLibItems>
             <linkerLibFileItem>/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xgcc40-mt.a</linkerLibFileItem>
             <linkerLibFileItem>/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_system-xgcc40-mt.a</linkerLibFileItem>
           </linkerLibItems>
+          <commandLine>-framework CoreFoundation</commandLine>
         </linkerTool>
       </compileType>
       <item path="src/cache.cpp">
         <itemTool>1</itemTool>
       </item>
       <item path="src/cache.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/config.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/config.h">
         <itemTool>3</itemTool>
       </item>
       <item path="src/jss.cpp">
@@ -62,7 +74,7 @@
         <itemTool>3</itemTool>
       </item>
     </conf>
-    <conf name="Release" type="1">
+    <conf name="Release_Mac" type="1">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>GNU|GNU</compilerSet>
@@ -78,23 +90,33 @@
           <includeDirectories>
             <directoryPath>../../boost_1_37_0/include/boost-1_37</directoryPath>
           </includeDirectories>
+          <preprocessorList>
+            <Elem>MACOS</Elem>
+          </preprocessorList>
         </ccCompilerTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
         </fortranCompilerTool>
         <linkerTool>
-          <output>dist/Release/${PLATFORM}/jss</output>
+          <output>dist/jss</output>
           <stripSymbols>true</stripSymbols>
           <linkerLibItems>
             <linkerLibFileItem>/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xgcc40-mt.a</linkerLibFileItem>
             <linkerLibFileItem>/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_system-xgcc40-mt.a</linkerLibFileItem>
           </linkerLibItems>
+          <commandLine>-framework CoreFoundation</commandLine>
         </linkerTool>
       </compileType>
       <item path="src/cache.cpp">
         <itemTool>1</itemTool>
       </item>
       <item path="src/cache.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/config.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/config.h">
         <itemTool>3</itemTool>
       </item>
       <item path="src/jss.cpp">
@@ -131,6 +153,12 @@
         <itemTool>1</itemTool>
       </item>
       <item path="src/cache.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/config.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/config.h">
         <itemTool>3</itemTool>
       </item>
       <item path="src/jss.cpp">
@@ -170,6 +198,12 @@
         <itemTool>1</itemTool>
       </item>
       <item path="src/cache.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/config.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/config.h">
         <itemTool>3</itemTool>
       </item>
       <item path="src/jss.cpp">
