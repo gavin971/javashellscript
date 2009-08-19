@@ -25,10 +25,11 @@ public class TextExtractor {
 
     /**
      * Creates a new Text Extractor object.
-     * @param reader	the reader with the PDF
+     * @param datei	die PDF-datei
+     * @throws IOException falls die Datei nicht geöffnet werden kann
      */
-    public TextExtractor(PdfReader reader) {
-        this.reader = reader;
+    public TextExtractor(String datei) throws IOException {
+        this.reader = new PdfReader(datei);
         extractionProcessor = new TextExtractingPdfContentStreamProcessor();
     }
 
@@ -65,5 +66,19 @@ public class TextExtractor {
         return (ArrayList<String[]>) extractionProcessor.getResultantText(TextExtractingPdfContentStreamProcessor.RETURN_LIST);
     }
 
+    /**
+     * Gibt das Reader-Objekt zurück
+     * @return
+     */
+    public PdfReader getPdfReader() {
+        return reader;
+    }
 
+    /**
+     * Gibt die Anzahl der Seiten in der PDF-Datei zurück
+     * @return
+     */
+    public int getAnzahlDerSeiten() {
+        return reader.getNumberOfPages();
+    }
 }
