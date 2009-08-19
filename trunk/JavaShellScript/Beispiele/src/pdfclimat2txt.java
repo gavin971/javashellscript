@@ -4,7 +4,6 @@
  * Dieses Beispiel nutzt iText um aus einer pdf-datei tabellen zu extrahieren
  * und in eine Text-datei zu schreiben
  */
-import com.lowagie.text.pdf.PdfReader;
 import java.io.*;
 import java.util.ArrayList;
 import jsslib.pdf.TextExtractor;
@@ -28,11 +27,8 @@ public class pdfclimat2txt {
 
         //io-fehler abfangen
         try {
-            //Die PDF-Datei öffnen
-            PdfReader reader = new PdfReader(args[0]);
-
-            //Der Text soll ausgelesen werden
-            TextExtractor pte = new TextExtractor(reader);
+            //der TextExtractor liest die pdf-datei
+            TextExtractor pte = new TextExtractor(args[0]);
 
             //Datei für Ergebnis öffnen
             //PrintWriter datei = new PrintWriter("climat_test.txt"); geht zwar auch,
@@ -41,12 +37,12 @@ public class pdfclimat2txt {
             PrintWriter datei = new PrintWriter(new BufferedWriter(new FileWriter(args[1])));
 
             //wie viele Seiten hat die PDF-datei?
-            int AnzahlDerSeiten = reader.getNumberOfPages();
+            int AnzahlDerSeiten = pte.getAnzahlDerSeiten();
 
             //Schleife über die interessanten Seiten
             for (int seite=1;seite<=AnzahlDerSeiten;seite++) {
 
-                System.out.println("Aktuelle Seite: " + seite);
+                System.out.print("Aktuelle Seite: " + seite);
 
                 //Seiteninhalt als ArrayList holen
                 //Jedes Element der Liste ist ein String[] mit den Wörtern der Zeile
@@ -54,8 +50,12 @@ public class pdfclimat2txt {
 
                 //prüfen, ob es sich um eine Seite handelt, die in der ersten Zeile
                 //nur SURFACE steht. Falls nicht weiter zur nächsten Seite
-                if (!inhalt.get(0)[0].trim().equals("SURFACE")) continue;
-
+                if (!inhalt.get(0)[0].trim().equals("SURFACE")) {
+                    System.out.println();
+                    continue;
+                }
+                System.out.println("  CLIMATs !");
+                
                 //Schleife über alle Zeilen
                 for (int i = 0;i<inhalt.size();i++) {
                     String[] zeile = inhalt.get(i);
