@@ -54,7 +54,7 @@ public class pdfclimat2txt {
                     System.out.println();
                     continue;
                 }
-                System.out.println("  CLIMATs !");
+                System.out.println(" - enthält CLIMATs !");
                 
                 //Schleife über alle Zeilen
                 for (int i = 0;i<inhalt.size();i++) {
@@ -100,7 +100,7 @@ public class pdfclimat2txt {
         }
 
         //Laufzeit ausgeben
-        System.out.println("Laufzeit in Sekunden: " + ((System.currentTimeMillis()-startzeit)/1000));
+        System.out.println("Laufzeit in Sekunden: " + ((System.currentTimeMillis()-startzeit)/1000d));
     }
 
     /**

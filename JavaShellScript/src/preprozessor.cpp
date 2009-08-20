@@ -276,8 +276,22 @@ int preprozessor::Compilieren() {
     //falls die jvm_optionen einen Classpath enthalten muss dieser
     //mit übernommen werden
     string cp = "";
+    //falls die jvm-Optionen ein encoding enthalten wird dieses
+    //auch auf die Quelldateien angewendet
+    int encindex = jvm_optionen.find("encoding=");
+    string enc = "";
+    if (encindex != string::npos) {
+        //die bezeichnung der codierung auslesen
+        //dazu erst mal das nächste leerzeichen finden
+        int leer = jvm_optionen.find(" ",encindex);
+        if (leer == string::npos) {
+            enc = "-encoding " + jvm_optionen.substr(encindex+9,string::npos);
+        } else {
+            enc = "-encoding " + jvm_optionen.substr(encindex+9,leer-encindex-9);
+        }
+    }
     if (!classpath.empty()) cp = "-cp "+classpath;
-    string komando = conf->getJavacExe() + " " + cp + " " + tempdir + "/*.java";
+    string komando = conf->getJavacExe() + " " + enc + " " + cp + " " + tempdir + "/*.java";
     int ergebnis = system(komando.c_str());
     if (ergebnis != 0) FehlerStatus = 4;
     return ergebnis;
