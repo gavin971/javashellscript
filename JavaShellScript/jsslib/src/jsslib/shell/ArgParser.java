@@ -130,4 +130,29 @@ public class ArgParser {
         resultarray[1] = result;
         return resultarray;
     }
+
+    /**
+     * This methode returns all unnamed arguments as an string array
+     * @param args
+     * @return
+     */
+    public static String[] getUnnamedArguments(Properties args) {
+        if (args == null) return null;
+        int index = 0;
+        String value;
+        final String[] temp = new String[args.size()];
+        while ((value = args.getProperty("unnamed"+index)) != null) {
+            temp[index] = value;
+            index++;
+        }
+
+        if (index == 0) return null;
+
+        String[] unnamed = new String[index];
+
+        for (int i=0;i<index;i++)
+            unnamed[i] = temp[i];
+
+        return unnamed;
+    }
 }
