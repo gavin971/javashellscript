@@ -8,7 +8,9 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Properties;
 import jsslib.parallel.ForLoop;
+import jsslib.shell.ArgParser;
 
 /**
  *
@@ -24,16 +26,30 @@ public class runparallel {
         }
 
         //Innerhalb des Loops kann nur auf final deklarierte Variablen zugegriffen werden
-        final String[] befehle = args;
+        Properties arguments = ArgParser.ArgsToProperties(args);
+        if (arguments == null) {
+            System.out.println("Error in the command line arguments!");
+            BeschreibungAnzeigen();
+            return;
+        }
+
+        int index = 0;
+        String value;
+        final String[] commands = new String[arguments.size()];
+        while ((value = arguments.getProperty("unnamed"+index)) != null) {
+            commands[index] = value;
+            index++;
+
+        }
 
         //die Parallele For-Schleife der jsslib wird genutzt
-        new ForLoop(0, args.length-1, 1, args.length) {
+        new ForLoop(0, index-1, 1, index) {
             @Override
             public void Loop(int i) {
                 char[] puffer = new char[1000];
                 try {
                     //den Befehl als neuen Prozess starten
-                    Process prozess = Runtime.getRuntime().exec(befehle[i]);
+                    Process prozess = Runtime.getRuntime().exec(commands[i]);
                     
                     //die Ausgabe des Prozesses abfangen
                     BufferedReader ausgabe =
