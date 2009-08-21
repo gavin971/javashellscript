@@ -25,7 +25,6 @@ public class runparallel {
             return;
         }
 
-        //Innerhalb des Loops kann nur auf final deklarierte Variablen zugegriffen werden
         Properties arguments = ArgParser.ArgsToProperties(args);
         if (arguments == null) {
             System.out.println("Error in the command line arguments!");
@@ -33,17 +32,11 @@ public class runparallel {
             return;
         }
 
-        int index = 0;
-        String value;
-        final String[] commands = new String[arguments.size()];
-        while ((value = arguments.getProperty("unnamed"+index)) != null) {
-            commands[index] = value;
-            index++;
-
-        }
+        //Innerhalb des Loops kann nur auf final deklarierte Variablen zugegriffen werden
+        final String[] commands = ArgParser.getUnnamedArguments(arguments);
 
         //die Parallele For-Schleife der jsslib wird genutzt
-        new ForLoop(0, index-1, 1, index) {
+        new ForLoop(0, commands.length-1, 1, commands.length) {
             @Override
             public void Loop(int i) {
                 char[] puffer = new char[1000];
