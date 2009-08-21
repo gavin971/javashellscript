@@ -24,6 +24,7 @@ public class CommandlineArgs {
             System.out.println("CommandlineArgs -name {a complex value with spaces inside}");
             System.out.println("CommandlineArgs {a complex unnamed value with spaces inside}");
             System.out.println("CommandlineArgs arg1 arg2 arg3 -name value");
+            return;
         }
 
         //print the args:
