@@ -3,6 +3,9 @@
 /*
  * This example will create a sample SQLite-Database file.
  * It is based on a sample for SQLiteJDBC from http://www.zentus.com/sqlitejdbc/
+ *
+ * See also helloSQL for the connection to any SQL-Database (SQLite, MySQL, ...)
+ * through the jsslib class jsslib.sql.Database
  */
 
 import java.sql.*;
