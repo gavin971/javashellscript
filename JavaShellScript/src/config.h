@@ -15,7 +15,7 @@
 
 //Für den Mac
 #ifdef MACOS
-#include <CoreFoundation/CoreFoundation.h>
+#include <CoreFoundation.h>
 #endif
 
 namespace bs = boost::filesystem;
