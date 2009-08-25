@@ -16,15 +16,18 @@ CC=gcc
 CCC=g++
 CXX=g++
 FC=gfortran
+AS=
 
 # Macros
-PLATFORM=GNU-MacOSX
+CND_PLATFORM=GNU-MacOSX
+CND_CONF=Release_Mac
+CND_DISTDIR=dist
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/Release_Mac/${PLATFORM}
+OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
@@ -43,6 +46,9 @@ CXXFLAGS=
 # Fortran Compiler Flags
 FFLAGS=
 
+# Assembler Flags
+ASFLAGS=
+
 # Link Libraries and Options
 LDLIBSOPTIONS=/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xgcc40-mt.a /Users/robert/Programm/boost_1_37_0/lib/x86/libboost_system-xgcc40-mt.a
 
@@ -58,21 +64,21 @@ dist/jss: ${OBJECTFILES}
 	${MKDIR} -p dist
 	${LINK.cc} -framework CoreFoundation -o dist/jss -Wl,-S ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/src/jss.o: src/jss.cpp 
+${OBJECTDIR}/src/jss.o: nbproject/Makefile-${CND_CONF}.mk src/jss.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
-	$(COMPILE.cc) -O2 -s -DMACOS -I../../boost_1_37_0/include/boost-1_37 -o ${OBJECTDIR}/src/jss.o src/jss.cpp
+	$(COMPILE.cc) -O2 -s -DMACOS -I../../boost_1_37_0/include/boost-1_37 -I/System/Library/Frameworks/CoreFoundation.framework/Headers -o ${OBJECTDIR}/src/jss.o src/jss.cpp
 
-${OBJECTDIR}/src/cache.o: src/cache.cpp 
+${OBJECTDIR}/src/cache.o: nbproject/Makefile-${CND_CONF}.mk src/cache.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
-	$(COMPILE.cc) -O2 -s -DMACOS -I../../boost_1_37_0/include/boost-1_37 -o ${OBJECTDIR}/src/cache.o src/cache.cpp
+	$(COMPILE.cc) -O2 -s -DMACOS -I../../boost_1_37_0/include/boost-1_37 -I/System/Library/Frameworks/CoreFoundation.framework/Headers -o ${OBJECTDIR}/src/cache.o src/cache.cpp
 
-${OBJECTDIR}/src/config.o: src/config.cpp 
+${OBJECTDIR}/src/config.o: nbproject/Makefile-${CND_CONF}.mk src/config.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
-	$(COMPILE.cc) -O2 -s -DMACOS -I../../boost_1_37_0/include/boost-1_37 -o ${OBJECTDIR}/src/config.o src/config.cpp
+	$(COMPILE.cc) -O2 -s -DMACOS -I../../boost_1_37_0/include/boost-1_37 -I/System/Library/Frameworks/CoreFoundation.framework/Headers -o ${OBJECTDIR}/src/config.o src/config.cpp
 
-${OBJECTDIR}/src/preprozessor.o: src/preprozessor.cpp 
+${OBJECTDIR}/src/preprozessor.o: nbproject/Makefile-${CND_CONF}.mk src/preprozessor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
-	$(COMPILE.cc) -O2 -s -DMACOS -I../../boost_1_37_0/include/boost-1_37 -o ${OBJECTDIR}/src/preprozessor.o src/preprozessor.cpp
+	$(COMPILE.cc) -O2 -s -DMACOS -I../../boost_1_37_0/include/boost-1_37 -I/System/Library/Frameworks/CoreFoundation.framework/Headers -o ${OBJECTDIR}/src/preprozessor.o src/preprozessor.cpp
 
 # Subprojects
 .build-subprojects:
