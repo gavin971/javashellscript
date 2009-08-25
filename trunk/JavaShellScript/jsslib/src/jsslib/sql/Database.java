@@ -83,7 +83,7 @@ public class Database {
         
         //connect to the database
         try {
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:" + filename);
+            conn = DriverManager.getConnection("jdbc:sqlite:" + filename);
         } catch (SQLException ex) {
             if (printErrorDirectly) ex.printStackTrace();
             lastError = ExceptionHandling.StackTraceToString(ex.getStackTrace());
@@ -91,6 +91,48 @@ public class Database {
         }
                 
         //everything allright
+        return true;
+    }
+
+    /**
+     * Returns the StackTrace of the Last Error and resets it
+     * @return
+     */
+    public String getLastError() {
+        String result = lastError;
+        lastError = "";
+        return result;
+    }
+
+    /**
+     * Executes INSERT, UPDATE or DELETE;
+     * @param sql the SQL-Command
+     * @return -1 on error else the number of affected rows
+     */
+    public int executeUpdate(String sql) {
+        try {
+            Statement stat = conn.createStatement();
+            return stat.executeUpdate(sql);
+        } catch (SQLException ex) {
+            if (printErrorDirectly) ex.printStackTrace();
+            lastError = ExceptionHandling.StackTraceToString(ex.getStackTrace());
+            return -1;
+        }
+
+    }
+
+    /**
+     * Close the connection
+     * @return
+     */
+    public boolean disconnect() {
+        try {
+            conn.close();
+        } catch (SQLException ex) {
+            if (printErrorDirectly) ex.printStackTrace();
+            lastError = ExceptionHandling.StackTraceToString(ex.getStackTrace());
+            return false;
+        }
         return true;
     }
 }
