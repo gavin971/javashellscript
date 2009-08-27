@@ -15,8 +15,9 @@ public class ExceptionHandling {
      * @param trace
      * @return
      */
-    public static String StackTraceToString(StackTraceElement[] trace) {
-        String result = "";
+    public static String StackTraceToString(Exception ex) {
+        String result = ex.toString() + "\n";
+        StackTraceElement[] trace = ex.getStackTrace();
         for (int i=0;i<trace.length;i++) {
             result += trace[i].toString() + "\n";
         }
