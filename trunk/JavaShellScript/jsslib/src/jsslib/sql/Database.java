@@ -68,7 +68,7 @@ public class Database {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException ex) {
             if (printErrorDirectly) ex.printStackTrace();
-            lastError = ExceptionHandling.StackTraceToString(ex.getStackTrace());
+            lastError = ExceptionHandling.StackTraceToString(ex);
             return false;
         }
         
@@ -86,7 +86,7 @@ public class Database {
             conn = DriverManager.getConnection("jdbc:sqlite:" + filename);
         } catch (SQLException ex) {
             if (printErrorDirectly) ex.printStackTrace();
-            lastError = ExceptionHandling.StackTraceToString(ex.getStackTrace());
+            lastError = ExceptionHandling.StackTraceToString(ex);
             return false;
         }
                 
@@ -110,13 +110,41 @@ public class Database {
      * @return -1 on error else the number of affected rows
      */
     public int executeUpdate(String sql) {
+        //check the connection
+        if (conn == null) {
+            lastError = "ERROR: executeUpdate: conn = null!";
+            return -1;
+        }
+        //Execute the sql-Statement
         try {
             Statement stat = conn.createStatement();
             return stat.executeUpdate(sql);
         } catch (SQLException ex) {
             if (printErrorDirectly) ex.printStackTrace();
-            lastError = ExceptionHandling.StackTraceToString(ex.getStackTrace());
+            lastError = ExceptionHandling.StackTraceToString(ex);
             return -1;
+        }
+    }
+
+    /**
+     * Execute a database query and return the ResultSet
+     * @param sql
+     * @return
+     */
+    public ResultSet executeQuery(String sql) {
+        //check the connection
+        if (conn == null) {
+            lastError = "ERROR: executeUpdate: conn = null!";
+            return null;
+        }
+        //Execute the sql-Statement
+        try {
+            Statement stat = conn.createStatement();
+            return stat.executeQuery(sql);
+        } catch (SQLException ex) {
+            if (printErrorDirectly) ex.printStackTrace();
+            lastError = ExceptionHandling.StackTraceToString(ex);
+            return null;
         }
 
     }
@@ -126,11 +154,16 @@ public class Database {
      * @return
      */
     public boolean disconnect() {
+        //check the connection
+        if (conn == null) {
+            lastError = "ERROR: disconnect: conn = null!";
+            return false;
+        }
         try {
             conn.close();
         } catch (SQLException ex) {
             if (printErrorDirectly) ex.printStackTrace();
-            lastError = ExceptionHandling.StackTraceToString(ex.getStackTrace());
+            lastError = ExceptionHandling.StackTraceToString(ex);
             return false;
         }
         return true;
