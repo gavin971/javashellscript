@@ -92,8 +92,8 @@ vector<bs::path> *preprozessor::getDateiListe() {
         int cpi = jvm_optionen.find("-cp ",0);
         if (cpi != string::npos) {
             int nextleer = jvm_optionen.find(" ",cpi+7);
-            int ende_sub = string::npos;
-            int ende_del = string::npos;
+            long ende_sub = string::npos;
+            long ende_del = string::npos;
             if (nextleer != string::npos) {
                 ende_sub = nextleer-cpi-4;
                 ende_del = nextleer-cpi;
@@ -104,7 +104,6 @@ vector<bs::path> *preprozessor::getDateiListe() {
         }
 
     }
-    
     return DateiListe;
 }
 
