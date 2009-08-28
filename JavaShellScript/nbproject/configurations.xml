@@ -47,8 +47,8 @@
         <linkerTool>
           <output>dist/jss</output>
           <linkerLibItems>
-            <linkerLibFileItem>/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xgcc40-mt.a</linkerLibFileItem>
-            <linkerLibFileItem>/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_system-xgcc40-mt.a</linkerLibFileItem>
+            <linkerLibFileItem>/Users/robert/Programm/boost_1_37_0/lib/x64/libboost_filesystem-xgcc40-mt.a</linkerLibFileItem>
+            <linkerLibFileItem>/Users/robert/Programm/boost_1_37_0/lib/x64/libboost_system-xgcc40-mt.a</linkerLibFileItem>
           </linkerLibItems>
           <commandLine>-framework CoreFoundation</commandLine>
         </linkerTool>

@@ -50,15 +50,15 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xgcc40-mt.a /Users/robert/Programm/boost_1_37_0/lib/x86/libboost_system-xgcc40-mt.a
+LDLIBSOPTIONS=/Users/robert/Programm/boost_1_37_0/lib/x64/libboost_filesystem-xgcc40-mt.a /Users/robert/Programm/boost_1_37_0/lib/x64/libboost_system-xgcc40-mt.a
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
 	${MAKE}  -f nbproject/Makefile-Debug_Mac.mk dist/jss
 
-dist/jss: /Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xgcc40-mt.a
+dist/jss: /Users/robert/Programm/boost_1_37_0/lib/x64/libboost_filesystem-xgcc40-mt.a
 
-dist/jss: /Users/robert/Programm/boost_1_37_0/lib/x86/libboost_system-xgcc40-mt.a
+dist/jss: /Users/robert/Programm/boost_1_37_0/lib/x64/libboost_system-xgcc40-mt.a
 
 dist/jss: ${OBJECTFILES}
 	${MKDIR} -p dist
