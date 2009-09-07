@@ -109,6 +109,9 @@ public class txt2obj {
         System.out.println("txt2obj source.txt -o destination.o");
         System.out.println("txt2obj source.txt -o destination.o -namespace Test");
         System.out.println("txt2obj source.txt -o destination.o -namespace Test::InTest");
+        System.out.println();
+        System.out.println("To use the text inside the linked binary write:");
+        System.out.println("extern const char* source_without_suffix;");
     }
 
     /**
