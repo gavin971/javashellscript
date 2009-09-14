@@ -3,6 +3,9 @@
 #Falls es schon ein Verzeichnis gibt, löschen.
 rm -rf jss
 
+#delete old tar file
+rm jss.tar.gz
+
 #neues Verzeichnis erstellen
 mkdir jss
 mkdir jss/lib
@@ -22,3 +25,8 @@ cd ../Installation
 #Beispiele verschieben
 mv ../Beispiele/samples jss/.
 
+#make a tar file
+tar -cf jss.tar jss
+
+#zip it
+gzip jss.tar
