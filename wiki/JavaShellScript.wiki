@@ -21,3 +21,15 @@ Run the program:
 {{{
 ./sample.java
 }}}
+
+= Installation =
+ * Download the tar-archive for your system
+ * unpack it where you want. That can be in your home directory if you don't have root permissions. 
+{{{
+tar -xvf jss-0.1-r44-macosx-intel-x64.tar.gz
+}}}
+ * create a symbolic link to the jss executable in a directory inside your PATH-variable
+{{{
+ln -s ${install_dir}/jss/jss /usr/bin/jss
+}}}
+ * or add the jss directory to your PATH variable (if you don't have root permissions).
