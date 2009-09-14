@@ -2,12 +2,22 @@
 
 = Introduction =
 
-Add your content here.
+A "Hello World" sample (file sample.java):
+{{{
+#!/usr/bin/env jss
+public class sample {
+   public static void main(String[] args) {
+       System.out.println("Hello World!");
+   }
+}
+}}}
 
+Make the file executable:
+{{{
+chmod +x sample.java
+}}}
 
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Run the program:
+{{{
+./sample.java
+}}}
