@@ -71,29 +71,29 @@ config *conf;
  */
 void Beschreibung() {
     cout << endl;
-    cout << "----------------------------------" << endl;
-    cout << "   JavaShellScript Interpreter    " << endl;
-    cout << "Copyright (C) Robert Schuster 2009" << endl;
-    cout << "----------------------------------" << endl;
+    cout << "--------------------------------------------" << endl;
+    cout << "           JavaShellScript 0.1              " << endl;
+    cout << "     Copyright (C) Robert Schuster 2009     " << endl;
+    cout << "--------------------------------------------" << endl;
     cout << endl;
-    cout << "Macht Java-Dateien als Shell-Script ausführbar." << endl;
-    cout << "Voraussetzung: JDK muss installiert sein!" << endl;
+    cout << "Make Java-Files executable as shell script." << endl;
+    cout << "Requirement: installed JDK" << endl;
     cout << endl;
-    cout << "Beispiel mit Main-Klasse (beispiel.java):" << endl;
+    cout << "Exsample with Main-Class (sample.java):" << endl;
     cout << "#!/usr/bin/env jss" << endl;
-    cout << "public class beispiel {" << endl;
+    cout << "public class sample {" << endl;
     cout << "   public static void main(String[] args) {" << endl;
-    cout << "       System.out.println(\"Hallo Welt!\");" << endl;
+    cout << "       System.out.println(\"Hello World!\");" << endl;
     cout << "   }" << endl;
     cout << "}" << endl;
     cout << endl;
-    cout << "Beispiel ohne Main-Klasse (beispiel.java):" << endl;
+    cout << "Sample without Main-Class (sample.java):" << endl;
     cout << "#!/usr/bin/env jss" << endl;
-    cout << "System.out.println(\"Hallo Welt!\");" << endl;
+    cout << "System.out.println(\"Hello World!\");" << endl;
     cout << endl;
-    cout << "Ausführen:" << endl;
-    cout << "chmod +x beispiel.java" << endl;
-    cout << "./beispiel.java" << endl;
+    cout << "Execute:" << endl;
+    cout << "chmod +x sample.java" << endl;
+    cout << "./sample.java" << endl;
 }
 
 
