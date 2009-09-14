@@ -65,7 +65,7 @@
           <developmentMode>5</developmentMode>
         </cTool>
         <ccTool>
-          <developmentMode>5</developmentMode>
+          <developmentMode>6</developmentMode>
           <stripSymbols>true</stripSymbols>
           <incDir>
             <pElem>../../boost_1_37_0/include/boost-1_37</pElem>
@@ -82,8 +82,8 @@
           <output>dist/jss</output>
           <stripSymbols>true</stripSymbols>
           <linkerLibItems>
-            <linkerLibFileItem>/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_filesystem-xgcc40-mt.a</linkerLibFileItem>
-            <linkerLibFileItem>/Users/robert/Programm/boost_1_37_0/lib/x86/libboost_system-xgcc40-mt.a</linkerLibFileItem>
+            <linkerLibFileItem>../../boost_1_37_0/lib/x64/libboost_filesystem-xgcc40-mt.a</linkerLibFileItem>
+            <linkerLibFileItem>../../boost_1_37_0/lib/x64/libboost_system-xgcc40-mt.a</linkerLibFileItem>
           </linkerLibItems>
           <commandLine>-framework CoreFoundation</commandLine>
         </linkerTool>
