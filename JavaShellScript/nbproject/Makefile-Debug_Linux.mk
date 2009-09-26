@@ -15,11 +15,11 @@ RANLIB=ranlib
 CC=gcc
 CCC=g++
 CXX=g++
-FC=gfortran
-AS=
+FC=
+AS=as
 
 # Macros
-CND_PLATFORM=GNU-MacOSX
+CND_PLATFORM=GNU-Linux-x86
 CND_CONF=Debug_Linux
 CND_DISTDIR=dist
 
@@ -50,15 +50,15 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=/usr/lib/libboost_filesystem.a /usr/lib/libboost_system.a
+LDLIBSOPTIONS=/usr/lib/libboost_filesystem-mt.a /usr/lib/libboost_system-mt.a
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
 	${MAKE}  -f nbproject/Makefile-Debug_Linux.mk dist/jss
 
-dist/jss: /usr/lib/libboost_filesystem.a
+dist/jss: /usr/lib/libboost_filesystem-mt.a
 
-dist/jss: /usr/lib/libboost_system.a
+dist/jss: /usr/lib/libboost_system-mt.a
 
 dist/jss: ${OBJECTFILES}
 	${MKDIR} -p dist
