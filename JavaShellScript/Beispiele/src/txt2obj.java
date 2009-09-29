@@ -105,7 +105,7 @@ public class txt2obj {
 
             //loop over all lines in the source file
             while ((sourceline = sourcereader.readLine()) != null) {
-                tempfilewriter.println(sourceline + "\\");
+                tempfilewriter.println(sourceline + "\\n\\");
             }
 
             //finish the text
