@@ -121,8 +121,10 @@ public class txt2obj {
             //close the source file
             sourcereader.close();
 
-            //compile the tempfile to the destination file using gpp
-            String gpp = "g++ -c " + tempfile.getAbsolutePath() + " -o " + destinationname;
+            //compile the tempfile to the destination file using g++ oder a spezified compiler
+            String compiler = arguments.getProperty("compiler");
+            if (compiler==null) compiler = "g++";
+            String gpp = compiler + " -c " + tempfile.getAbsolutePath() + " -o " + destinationname;
             //System.out.println(gpp);
             Process cpp_process = Runtime.getRuntime().exec(gpp);
             cpp_process.waitFor();
@@ -144,6 +146,7 @@ public class txt2obj {
         System.out.println("txt2obj source.txt -o destination.o");
         System.out.println("txt2obj source.txt -o destination.o -namespace Test");
         System.out.println("txt2obj source.txt -o destination.o -namespace Test::InTest");
+        System.out.println("txt2obj -compiler=g++ source.txt -o destination.o");
         System.out.println();
         System.out.println("To use the text inside the linked binary write:");
         System.out.println("extern const char* source_without_suffix;");
