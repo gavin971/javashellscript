@@ -31,7 +31,13 @@ public class TimePeriod implements Serializable {
     public int to_typ = -1;
     
     //Ein Tag in Millisekunden:
-    public final static long ONE_TAG = 86400000L;
+    public final static long ONE_DAY = 86400000L;
+
+    //One hour in ms
+    public final static long ONE_HOUR = 3600000L;
+
+    //One minute in ms
+    public final static long ONE_MIN = 60000L;
     
     /**
      * Ohne einen Parameter wird von und bis auf jetzt gesetzt
@@ -70,7 +76,7 @@ public class TimePeriod implements Serializable {
             case YESTERDAY:
                 from = new GregorianCalendar();
                 setMidnight(from);
-                from.setTimeInMillis(from.getTimeInMillis()-ONE_TAG);
+                from.setTimeInMillis(from.getTimeInMillis()-ONE_DAY);
                 break;
             case THIS_WEEK:
                 from = new GregorianCalendar();
@@ -85,7 +91,7 @@ public class TimePeriod implements Serializable {
                     day_offset_von = 2 - day_of_week;
                 }
                 //bis ist logischerweise 6-Tage nach von
-                from.setTimeInMillis(from.getTimeInMillis()+ONE_TAG*day_offset_von);
+                from.setTimeInMillis(from.getTimeInMillis()+ONE_DAY*day_offset_von);
                 break;
             case LAST_WEEK:
                 //wie diese woche, nur 7 tage weiter zurück
@@ -100,7 +106,7 @@ public class TimePeriod implements Serializable {
                 } else {
                     day_offset_von2 = -5 - day_of_week2;
                 }
-                from.setTimeInMillis(from.getTimeInMillis()+ONE_TAG*day_offset_von2);
+                from.setTimeInMillis(from.getTimeInMillis()+ONE_DAY*day_offset_von2);
                 break;
             case THIS_MONTH:
                 from = new GregorianCalendar();
@@ -113,9 +119,9 @@ public class TimePeriod implements Serializable {
                 from.set(Calendar.DAY_OF_MONTH, 1);
                 //der erste tag des letzten Monats ist vielleicht nicht mehr in diesem Jahr, also
                 //rückwärts laufen, bis wieder ein erster Tag gefunden wird
-                from.setTimeInMillis(from.getTimeInMillis()-ONE_TAG);
+                from.setTimeInMillis(from.getTimeInMillis()-ONE_DAY);
                 while (from.get(Calendar.DAY_OF_MONTH) != 1)
-                    from.setTimeInMillis(from.getTimeInMillis()-ONE_TAG);
+                    from.setTimeInMillis(from.getTimeInMillis()-ONE_DAY);
                 break;
             case THIS_JEAR:
                 from = new GregorianCalendar();
@@ -165,7 +171,7 @@ public class TimePeriod implements Serializable {
             case YESTERDAY:
                 to = new GregorianCalendar();
                 set2359(to);
-                to.setTimeInMillis(to.getTimeInMillis()-ONE_TAG);
+                to.setTimeInMillis(to.getTimeInMillis()-ONE_DAY);
                 break;
             case THIS_WEEK:
                 to = new GregorianCalendar();
@@ -181,7 +187,7 @@ public class TimePeriod implements Serializable {
                 //bis ist logischerweise 6-Tage nach von
                 int day_offset_bis = day_offset_von + 6;
                 set2359(to);
-                to.setTimeInMillis(to.getTimeInMillis()+ONE_TAG*day_offset_bis);
+                to.setTimeInMillis(to.getTimeInMillis()+ONE_DAY*day_offset_bis);
                 break;
             case LAST_WEEK:
                 //wie diese woche, nur 7 tage weiter zurück
@@ -198,7 +204,7 @@ public class TimePeriod implements Serializable {
                 //bis ist logischerweise 6-Tage nach von
                 int day_offset_bis2 = day_offset_von2 + 6;
                 set2359(to);
-                to.setTimeInMillis(to.getTimeInMillis()+ONE_TAG*day_offset_bis2);
+                to.setTimeInMillis(to.getTimeInMillis()+ONE_DAY*day_offset_bis2);
                 break;
             case THIS_MONTH:
                 GregorianCalendar temp = new GregorianCalendar();
@@ -209,9 +215,9 @@ public class TimePeriod implements Serializable {
                 //wann der letzte tag im monat ist ist unklar, also solange weiter gehen,
                 //bis der neue monat anfängt, dann einen tag zurück
                 while(to.get(Calendar.MONTH) == temp.get(Calendar.MONTH))
-                    to.setTimeInMillis(to.getTimeInMillis()+ONE_TAG);
+                    to.setTimeInMillis(to.getTimeInMillis()+ONE_DAY);
                 //Jetzt wieder einen tag zurück
-                to.setTimeInMillis(to.getTimeInMillis()-ONE_TAG);
+                to.setTimeInMillis(to.getTimeInMillis()-ONE_DAY);
                 break;
             case LAST_MONTH:
                 GregorianCalendar temp2 = new GregorianCalendar();
@@ -219,7 +225,7 @@ public class TimePeriod implements Serializable {
                 temp2.set(Calendar.DAY_OF_MONTH, 1);
                 //der erste tag des letzten Monats ist vielleicht nicht mehr in diesem Jahr, also
                 //rückwärts laufen, bis wieder ein erster Tag gefunden wird
-                temp2.setTimeInMillis(temp2.getTimeInMillis()-ONE_TAG);
+                temp2.setTimeInMillis(temp2.getTimeInMillis()-ONE_DAY);
                 to = new GregorianCalendar();
                 to.setTimeInMillis(temp2.getTimeInMillis());
                 set2359(to);
@@ -263,7 +269,7 @@ public class TimePeriod implements Serializable {
      * um heute handelt.
      */
     public void setFromMinusOneDay() {
-        from.setTimeInMillis(from.getTimeInMillis()-ONE_TAG);
+        from.setTimeInMillis(from.getTimeInMillis()-ONE_DAY);
         GregorianCalendar heute = new GregorianCalendar();
         setMidnight(heute);
         if (from.getTimeInMillis() == heute.getTimeInMillis())
@@ -282,7 +288,7 @@ public class TimePeriod implements Serializable {
      * um heute handelt.
      */
     public void setFromPlusOneDay() {
-        from.setTimeInMillis(from.getTimeInMillis()+ONE_TAG);
+        from.setTimeInMillis(from.getTimeInMillis()+ONE_DAY);
         GregorianCalendar heute = new GregorianCalendar();
         setMidnight(heute);
         if (from.getTimeInMillis() == heute.getTimeInMillis())
@@ -303,7 +309,7 @@ public class TimePeriod implements Serializable {
      * um heute handelt.
      */
     public void setToMinusOneDay() {
-        to.setTimeInMillis(to.getTimeInMillis()-ONE_TAG);
+        to.setTimeInMillis(to.getTimeInMillis()-ONE_DAY);
         GregorianCalendar heute = new GregorianCalendar();
         set2359(heute);
         if (to.getTimeInMillis() == heute.getTimeInMillis())
@@ -324,7 +330,7 @@ public class TimePeriod implements Serializable {
      * um heute handelt.
      */
     public void setToPlusOneDay() {
-        to.setTimeInMillis(to.getTimeInMillis()+ONE_TAG);
+        to.setTimeInMillis(to.getTimeInMillis()+ONE_DAY);
         GregorianCalendar heute = new GregorianCalendar();
         set2359(heute);
         if (to.getTimeInMillis() == heute.getTimeInMillis())
@@ -425,8 +431,8 @@ public class TimePeriod implements Serializable {
 
     public int getDurationInDays() {
         int ergebnis = 0;
-        int bistag = (int)(to.getTimeInMillis()/ONE_TAG);
-        int vontag = (int)(from.getTimeInMillis()/ONE_TAG);
+        int bistag = (int)(to.getTimeInMillis()/ONE_DAY);
+        int vontag = (int)(from.getTimeInMillis()/ONE_DAY);
         ergebnis = bistag - vontag + 1;
         return ergebnis;
     }
@@ -438,16 +444,16 @@ public class TimePeriod implements Serializable {
         //Auf den Beginn des nächsten monats setzen
         if (from.get(Calendar.DAY_OF_MONTH) != 1) {
             while (from.get(Calendar.DAY_OF_MONTH) != 1) {
-                from.setTimeInMillis(from.getTimeInMillis()+ONE_TAG);
+                from.setTimeInMillis(from.getTimeInMillis()+ONE_DAY);
             }
             setMidnight(from);
         }
         //Auf das Ende des Vorherigen Monats setzen
         GregorianCalendar temp = new GregorianCalendar();
-        temp.setTimeInMillis(to.getTimeInMillis()+ONE_TAG);
+        temp.setTimeInMillis(to.getTimeInMillis()+ONE_DAY);
         if (temp.get(Calendar.MONTH) == to.get(Calendar.MONTH)) {
             while (to.get(Calendar.MONTH) == temp.get(Calendar.MONTH)) {
-                to.setTimeInMillis(to.getTimeInMillis()-ONE_TAG);
+                to.setTimeInMillis(to.getTimeInMillis()-ONE_DAY);
             }
             set2359(to);
         }
@@ -496,9 +502,9 @@ public class TimePeriod implements Serializable {
             //wann der letzte tag im monat ist ist unklar, also solange weiter gehen,
             //bis der neue monat anfängt, dann einen tag zurück
             while(temp.to.get(Calendar.MONTH) == temp.from.get(Calendar.MONTH))
-                temp.to.setTimeInMillis(temp.to.getTimeInMillis()+ONE_TAG);
+                temp.to.setTimeInMillis(temp.to.getTimeInMillis()+ONE_DAY);
             //Jetzt wieder einen tag zurück
-            temp.to.setTimeInMillis(temp.to.getTimeInMillis()-ONE_TAG);
+            temp.to.setTimeInMillis(temp.to.getTimeInMillis()-ONE_DAY);
             temp.set2359(temp.to);
 
             //Fertig! den Monat in die ArrayListe einfügen
@@ -530,7 +536,7 @@ public class TimePeriod implements Serializable {
         while (temp.before(to)) {
             aktuellerTag = temp.get(Calendar.DAY_OF_WEEK);
             if (aktuellerTag == wochentag) ergebnis++;
-            temp.setTimeInMillis(temp.getTimeInMillis()+ONE_TAG);
+            temp.setTimeInMillis(temp.getTimeInMillis()+ONE_DAY);
         }
         return ergebnis;
     }
