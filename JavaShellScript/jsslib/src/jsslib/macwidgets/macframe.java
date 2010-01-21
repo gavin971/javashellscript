@@ -7,13 +7,14 @@ import com.explodingpixels.macwidgets.SourceList;
 import com.explodingpixels.macwidgets.SourceListCategory;
 import com.explodingpixels.macwidgets.SourceListItem;
 import com.explodingpixels.macwidgets.SourceListModel;
+import com.explodingpixels.macwidgets.SourceListSelectionListener;
 import com.explodingpixels.macwidgets.UnifiedToolBar;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Point;
 import java.util.List;
 import javax.swing.JButton;
@@ -34,6 +35,7 @@ public class macframe extends JFrame {
     public SourceListModel listModel;
     public SourceList sourceList;
     public JPanel contentPanel;
+    public CardLayout contentPanelLayout;
 
     /**
      * create a window with a UnifiedToolbar and a Bottombar in MacOS X style
@@ -57,6 +59,11 @@ public class macframe extends JFrame {
         listModel = new SourceListModel();
         sourceList = new SourceList(listModel);
         sourceList.setFocusable(false);
+        sourceList.addSourceListSelectionListener(new SourceListSelectionListener() {
+            public void sourceListItemSelected(SourceListItem item) {
+                sourceListSelected(item);
+            }
+        });
         sourceList.getComponent().setPreferredSize(new Dimension(200, 0));
         GridBagConstraints sourceList_gbc = CommonFunctions.getGridBagConstraints();
         sourceList_gbc.gridy = 1;
@@ -70,7 +77,7 @@ public class macframe extends JFrame {
         contentPanel.setOpaque(true);
         contentPanel.setBackground(Color.WHITE);
         contentPanel.setVisible(true);
-        contentPanel.setLayout(new GridLayout(1, 1));
+        contentPanel.setLayout(contentPanelLayout = new CardLayout());
         this.add(contentPanel, panel_gbc);
 
         GridBagConstraints linie_gbc = CommonFunctions.getGridBagConstraints();
@@ -191,4 +198,13 @@ public class macframe extends JFrame {
         if (center.x < 0 || center.y <0) this.setBounds(ge.getMaximumWindowBounds());
         else this.setLocation(center);
     }
+
+
+    /**
+     * Override this method to change the behavior
+     * @param item
+     */
+    public void sourceListSelected(SourceListItem item) {
+    }
+
 }
