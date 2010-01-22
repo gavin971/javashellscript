@@ -16,6 +16,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Point;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -96,6 +98,15 @@ public class macframe extends JFrame {
         bottomBar_gbc.gridwidth = 3;
         bottomBar_gbc.weighty = 0;
         this.add(bottomBar.getComponent(), bottomBar_gbc);
+
+        this.addWindowFocusListener(new WindowFocusListener() {
+            public void windowGainedFocus(WindowEvent e) {
+                repaint();
+            }
+
+            public void windowLostFocus(WindowEvent e) {
+            }
+        });
     }
 
     /**
