@@ -23,18 +23,18 @@ CND_PACKAGE_DIR_Release_Mac=dist/Release_Mac/GNU-MacOSX/package
 CND_PACKAGE_NAME_Release_Mac=javashellscript.tar
 CND_PACKAGE_PATH_Release_Mac=dist/Release_Mac/GNU-MacOSX/package/javashellscript.tar
 # Debug_Linux configuration
-CND_PLATFORM_Debug_Linux=GNU-Linux-x86
+CND_PLATFORM_Debug_Linux=
 CND_ARTIFACT_DIR_Debug_Linux=dist
 CND_ARTIFACT_NAME_Debug_Linux=jss
 CND_ARTIFACT_PATH_Debug_Linux=dist/jss
-CND_PACKAGE_DIR_Debug_Linux=dist/Debug_Linux/GNU-Linux-x86/package
+CND_PACKAGE_DIR_Debug_Linux=dist/Debug_Linux//package
 CND_PACKAGE_NAME_Debug_Linux=javashellscript.tar
-CND_PACKAGE_PATH_Debug_Linux=dist/Debug_Linux/GNU-Linux-x86/package/javashellscript.tar
+CND_PACKAGE_PATH_Debug_Linux=dist/Debug_Linux//package/javashellscript.tar
 # Release_Linux configuration
-CND_PLATFORM_Release_Linux=GNU-Linux-x86
+CND_PLATFORM_Release_Linux=
 CND_ARTIFACT_DIR_Release_Linux=dist
 CND_ARTIFACT_NAME_Release_Linux=jss
 CND_ARTIFACT_PATH_Release_Linux=dist/jss
-CND_PACKAGE_DIR_Release_Linux=dist/Release_Linux/GNU-Linux-x86/package
+CND_PACKAGE_DIR_Release_Linux=dist/Release_Linux//package
 CND_PACKAGE_NAME_Release_Linux=javashellscript.tar
-CND_PACKAGE_PATH_Release_Linux=dist/Release_Linux/GNU-Linux-x86/package/javashellscript.tar
+CND_PACKAGE_PATH_Release_Linux=dist/Release_Linux//package/javashellscript.tar
