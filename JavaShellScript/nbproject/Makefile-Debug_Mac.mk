@@ -84,7 +84,7 @@ ${OBJECTDIR}/src/preprozessor.o: nbproject/Makefile-${CND_CONF}.mk src/preprozes
 .build-subprojects:
 
 # Clean Targets
-.clean-conf:
+.clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r build/Debug_Mac
 	${RM} dist/jss
 
