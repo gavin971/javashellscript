@@ -20,7 +20,7 @@ public class Exec {
     /**
      * Hashtable with all Variables and values
      */
-    private static Hashtable<String,String> env_hash;
+    private static Hashtable<String,String> env_hash = new Hashtable<String, String>();
 
     /**
      * Add a variable to the environment
@@ -28,7 +28,6 @@ public class Exec {
      * @param value
      */
     public static void setEnv(String var, String value) {
-        if (env_hash == null) env_hash = new Hashtable<String, String>();
         env_hash.put(var, value);
     }
 

@@ -35,6 +35,7 @@
 
 package jsslib.shell;
 
+import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 
@@ -49,5 +50,33 @@ public class SystemInfo {
     public static double getCPUload() {
         OperatingSystemMXBean os = ManagementFactory.getOperatingSystemMXBean();
         return os.getSystemLoadAverage();
+    }
+
+    /**
+     * This Function will return A file Object for the config-dir specified by
+     * the name parameter.
+     * On Linux this will be /home/USERNAME/.name
+     * @param name
+     * @return
+     */
+    public static File getConfigDir(String name) {
+        File result;
+        String osname = System.getProperty("os.name");
+        String ergebnis;
+        //Windows Vista
+        if (osname.contains("Windows")) {
+            String appdata = System.getenv("APPDATA");
+            ergebnis = appdata + "/"+name;
+        //Mac OS
+        } else if (osname.contains("Mac OS X")) {
+            String home = System.getProperty("user.home");
+            ergebnis = home + "/Library/Application Support/"+name;
+        //Alles andere, zum Beispiel Linux
+        } else {
+            String home = System.getProperty("user.home");
+            ergebnis = home + "/."+name;
+        }
+        result = new File(ergebnis);
+        return result;
     }
 }
