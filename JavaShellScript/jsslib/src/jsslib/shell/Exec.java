@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -29,6 +30,32 @@ public class Exec {
      */
     public static void setEnv(String var, String value) {
         env_hash.put(var, value);
+    }
+
+    /**
+     * load the bash environment variables and save them for all the next commands
+     */
+    public static void inheritBashEnv() throws IOException {
+        String env_out = runToString("bash -l -c env", null);
+        //Split the output into lines
+        String[] lines = env_out.split("\n");
+        for (int i=0;i<lines.length;i++) {
+            String[] nameValue = lines[i].split("=");
+            if (nameValue.length == 2)
+                setEnv(nameValue[0], nameValue[1]);
+        }
+    }
+
+    /**
+     * run the unix command which
+     * @param command
+     * @return
+     */
+    public static String which(String command) throws IOException {
+        String result = runToString("which "+ command, null);
+        //remove new lines
+        result = result.replace("\n", "");
+        return result;
     }
 
     /**
@@ -73,7 +100,9 @@ public class Exec {
         String output = "";
         char[] puffer = new char[1000];
         //create a new Prozess
-        Process prozess = Runtime.getRuntime().exec(command, getEnvStrArr(), new File(dir));
+        File fdir = null;
+        if (dir != null) fdir = new File(dir);
+        Process prozess = Runtime.getRuntime().exec(command, getEnvStrArr(), fdir);
 
         //die Ausgabe des Prozesses abfangen
         BufferedReader ausgabe =
@@ -127,7 +156,9 @@ public class Exec {
     public static void runToFile(String command, String dir, String outputfile) throws IOException {
         byte[] puffer = new byte[10000];
         //create a new Prozess
-        Process prozess = Runtime.getRuntime().exec(command, getEnvStrArr(), new File(dir));
+        File fdir = null;
+        if (dir != null) fdir = new File(dir);
+        Process prozess = Runtime.getRuntime().exec(command, getEnvStrArr(), fdir);
 
         //in datei umleiten
         BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(outputfile));
