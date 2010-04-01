@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -30,6 +29,16 @@ public class Exec {
      */
     public static void setEnv(String var, String value) {
         env_hash.put(var, value);
+    }
+
+    /**
+     * Read a variable from the environment
+     * @param  var
+     * @return value
+     */
+    public static String getEnv(String var) {
+        String result = env_hash.get(var);
+        return result;
     }
 
     /**
