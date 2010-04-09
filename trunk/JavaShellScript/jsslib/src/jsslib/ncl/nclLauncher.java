@@ -21,16 +21,19 @@ public class nclLauncher {
         //copy the args to the arguments string
         int index = 1;
         for (Object arg:args) {
-            if (arg.getClass().getCanonicalName().equals("java.lang.Float[]")) {
+            if (arg.getClass().getCanonicalName().contains("[]")) {
                 arguments += "arg"+index+"=(/";
-                for (int i=0;i<((Float[])arg).length;i++) {
-                    arguments += ((Float[])arg)[i];
-                    if (i < ((Float[])arg).length-1) arguments += ",";
+                for (int i=0;i<((Object[])arg).length;i++) {
+                    arguments += ((Object[])arg)[i];
+                    if (i < ((Object[])arg).length-1) arguments += ",";
                 }
                 arguments += "/) ";
+            } else {
+                arguments += "arg"+index+"=" + arg + " ";
             }
             index++;
         }
+        System.out.println("ncl " + nclscript + " " + arguments);
         String output = Exec.runToString("ncl " + nclscript + " " + arguments, path);
         System.out.println(output);
     }
