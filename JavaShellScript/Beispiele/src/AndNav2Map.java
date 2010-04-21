@@ -73,6 +73,7 @@ public class AndNav2Map {
             System.out.println("    -splitx #n   split the output in x-direction");
             System.out.println("    -splity #n   split the output in y-direction");
             System.out.println("    -overlap #n  overlap the slited output tiles");
+            System.out.println("    -addscale    add a scale at the lower left corner");
             return;
         }
 
@@ -99,6 +100,25 @@ public class AndNav2Map {
             if (arguments.containsKey("overlap")) {
                 overlap = Integer.parseInt(arguments.getProperty("overlap"));
                 System.out.println("Add overlapping of "+overlap+" pixel");
+            }
+        }
+
+        //add a scale?
+        boolean addscale = false;
+        String ScaleUnit = "";
+        int ScaleValue = 0;
+        int ScalePixel = 0;
+        if (arguments.containsKey("addscale")) {
+            addscale = true;
+            if (arguments.getProperty("unnamed0").equals("13")) {
+                ScaleValue = 3;
+                ScaleUnit = "km";
+                ScalePixel = 158;
+            }
+            if (arguments.getProperty("unnamed0").equals("16")) {
+                ScaleValue = 500;
+                ScaleUnit = "m";
+                ScalePixel = 210;
             }
         }
 
@@ -138,7 +158,21 @@ public class AndNav2Map {
                             }
                         }
                     
-                    }                
+                    }
+                    //add the scale
+                    if (addscale && x==0 && y==splity-1) {
+                        int scalex = width/2;
+                        int scaley = tileheight-height/2+overlap;
+                        outputg.setFont(outputg.getFont().deriveFont(height*0.1f));
+                        for (int sx=0;sx<4;sx++) {
+                            if (sx % 2 == 0) outputg.setColor(Color.black);
+                            else outputg.setColor(Color.white);
+                            outputg.fillRect(scalex+sx*ScalePixel, scaley, ScalePixel, (int) (height * 0.05));
+                            outputg.setColor(Color.black);
+                            outputg.drawRect(scalex+sx*ScalePixel, scaley, ScalePixel, (int) (height * 0.05));
+                            outputg.drawString((ScaleValue*sx)+" "+ScaleUnit, scalex+sx*ScalePixel, scaley + (int) (height * 0.20));
+                        }
+                    }
                     //write the output to a file
                     System.out.println("\nWriting the output image...\n");
                     ImageIO.write(output, "png", new File("map"+x+"x"+y+".png"));
