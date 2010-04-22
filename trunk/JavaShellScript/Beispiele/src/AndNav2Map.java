@@ -39,6 +39,7 @@
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Properties;
@@ -120,6 +121,11 @@ public class AndNav2Map {
                 ScaleUnit = "m";
                 ScalePixel = 210;
             }
+            if (arguments.getProperty("unnamed0").equals("17")) {
+                ScaleValue = 200;
+                ScaleUnit = "m";
+                ScalePixel = 168;
+            }
         }
 
 
@@ -146,24 +152,26 @@ public class AndNav2Map {
                     }
                     //loop over all input tiles
                     for (int j=0;j<tiledirs.length;j++) {
-                        System.out.println("Working on: ("+j+"/"+tiledirs.length+") " + tiledirs[j]);
-                        maptiles = tiledirs[j].listFiles();
-                        //copy eche tile into the line
-                        for (int i=0;i<maptiles.length;i++) {
-                            if (j*width >= x*tilewidth-width-overlap && j*width < (x+1)*tilewidth+overlap) {
-                                if (i*height >= y*tileheight-height-overlap && i*height < (y+1)*tileheight+overlap) {
-                                    BufferedImage tile = ImageIO.read(maptiles[i]);
-                                    outputg.drawImage(tile, j*width-x*tilewidth+overlap, i*height-y*tileheight+overlap, null);
+                        System.out.println("Working on: ("+(j+1)+"/"+tiledirs.length+") " + tiledirs[j]);
+                        if (tiledirs[j].isDirectory()) {
+                            maptiles = tiledirs[j].listFiles();
+                            //copy eche tile into the line
+                            for (int i=0;i<maptiles.length;i++) {
+                                if (j*width >= x*tilewidth-width-overlap && j*width < (x+1)*tilewidth+overlap) {
+                                    if (i*height >= y*tileheight-height-overlap && i*height < (y+1)*tileheight+overlap) {
+                                        BufferedImage tile = ImageIO.read(maptiles[i]);
+                                        outputg.drawImage(tile, j*width-x*tilewidth+overlap, i*height-y*tileheight+overlap, null);
+                                    }
                                 }
                             }
-                        }
-                    
+                        } // if tiles
                     }
                     //add the scale
                     if (addscale && x==0 && y==splity-1) {
                         int scalex = width/2;
                         int scaley = tileheight-height/2+overlap;
                         outputg.setFont(outputg.getFont().deriveFont(height*0.1f));
+                        outputg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                         for (int sx=0;sx<4;sx++) {
                             if (sx % 2 == 0) outputg.setColor(Color.black);
                             else outputg.setColor(Color.white);
