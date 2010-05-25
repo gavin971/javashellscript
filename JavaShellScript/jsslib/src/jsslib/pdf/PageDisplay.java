@@ -57,8 +57,8 @@ public class PageDisplay extends PagePanel {
             Rectangle2D clip = new Rectangle2D.Double(
                     factor*getBBoxFromGS().getX()-1,
                     factor*getBBoxFromGS().getY()-1,
-                    factor*getBBoxFromGS().getWidth()+2,
-                    factor*getBBoxFromGS().getHeight()+2);
+                    factor*getBBoxFromGS().getWidth()+10,
+                    factor*getBBoxFromGS().getHeight()+10);
             showPage(null);
             showPage(page);
             waitForCurrentPage();
@@ -84,7 +84,7 @@ public class PageDisplay extends PagePanel {
         try {
 
             //find the uses area in the plot
-            String gs_out = Exec.runToString("gs -sDEVICE=bbox -dNOPAUSE -dBATCH " + pdffile.getAbsolutePath(), pdffile.getParent());
+            String gs_out = Exec.runToString("gs -sDEVICE=bbox -dNOPAUSE -dBATCH " + pdffile.getName(), pdffile.getParent());
             //parse the bounding box
             int bbox_pos = gs_out.indexOf("%%HiResBoundingBox:");
             String bbox = gs_out.substring(bbox_pos+20);
