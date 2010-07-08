@@ -20,7 +20,7 @@ public class BeispieleKonvertieren {
             String[] dateien = srcdir.list();
 
             //altes verzeichnis löschen
-            Runtime.getRuntime().exec("rm -rf samples");
+            Runtime.getRuntime().exec("rm -rf samples").waitFor();
 
             //neues verzeichnis anlegen
             samplesdir.mkdir();
