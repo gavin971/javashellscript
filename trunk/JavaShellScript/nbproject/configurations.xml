@@ -91,7 +91,7 @@
     </conf>
     <conf name="Debug_Linux" type="1">
       <toolsSet>
-        <developmentServer>robert@192.168.1.37:22</developmentServer>
+        <developmentServer>localhost</developmentServer>
         <compilerSet>GNU|GNU</compilerSet>
         <platform>2</platform>
       </toolsSet>
@@ -105,7 +105,6 @@
           <output>dist/jss</output>
           <linkerLibItems>
             <linkerLibFileItem>/usr/lib/libboost_filesystem-mt.a</linkerLibFileItem>
-            <linkerLibFileItem>/usr/lib/libboost_system-mt.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
