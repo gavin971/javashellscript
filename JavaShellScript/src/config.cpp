@@ -50,7 +50,7 @@ config::config() {
     //Das Programmverzeichnis bestimmen
     string exelink = GetExeName();
     string exequelle = GetLinkQuelle(exelink);
-    jsspath = bs::path(exequelle).remove_filename();
+    jsspath = bs::path(exequelle).remove_leaf();
 
     //Standard-Werte
     javaexe = "java";
