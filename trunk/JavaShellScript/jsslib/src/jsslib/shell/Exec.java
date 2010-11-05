@@ -106,7 +106,7 @@ public class Exec {
      * @throws IOException
      */
     public static String runToString(String command, String dir) throws IOException {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         char[] puffer = new char[1000];
         //create a new Prozess
         File fdir = null;
@@ -126,14 +126,14 @@ public class Exec {
             while (ausgabe.ready()) {
                 int anzahl = ausgabe.read(puffer, 0, 1000);
                 for (int x=0;x<anzahl;x++)
-                    output += puffer[x];
+                    output.append(puffer[x]);
             }
 
             //fehler übernehmen
             while (error.ready()) {
                 int anzahl = error.read(puffer, 0, 1000);
                 for (int x=0;x<anzahl;x++)
-                    output += puffer[x];
+                    output.append(puffer[x]);
             }
 
             //Gibt es schon einen Rückgabe-wert? wenn ja, dann raus hier
@@ -152,7 +152,7 @@ public class Exec {
 
         }
 
-        return output;
+        return output.toString();
     }
 
     /**
