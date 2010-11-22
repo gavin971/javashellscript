@@ -84,12 +84,23 @@ public class hdf5flatten {
             return;
         }
 
+        //Delete the dest-file if it is already there
+        boolean removeDest = false;
+        if (arguments.containsKey("force")) {
+            removeDest = true;
+        }
+
+
         //The first argument is the source file
         String destfilename = arguments.getProperty("unnamed1");
         File destfile = new File(destfilename);
         if (destfile.isFile()) {
-            System.out.println("ERROR: "+destfilename + " already exists!");
-            return;
+            if (removeDest == false) {
+                System.out.println("ERROR: "+destfilename + " already exists!");
+                return;
+            } else {
+                destfile.delete();
+            }
         }
 
         //remove the groupname
@@ -160,8 +171,8 @@ public class hdf5flatten {
                     Structure struct = (Structure)var;
                     List<Variable> svars = struct.getVariables();
                     for (Variable svar:svars) {
-                        System.out.println("Define: " + var.getName() + "." + svar.getShortName() + " -> " + flatname+svar.getShortName());
-                        Variable temp = dest.addVariable(flatname+svar.getShortName(), svar.getDataType(), getFlatDims(svar));
+                        System.out.println("Define: " + var.getName() + "." + svar.getShortName() + " -> " + flatname+"_"+svar.getShortName());
+                        Variable temp = dest.addVariable(flatname+"_"+svar.getShortName(), svar.getDataType(), getFlatDims(svar));
                         List<Attribute> atts = svar.getAttributes();
                         for (Attribute att:atts) dest.addVariableAttribute(temp, att);
                     }
@@ -185,8 +196,8 @@ public class hdf5flatten {
                     Structure struct = (Structure)var;
                     List<Variable> svars = struct.getVariables();
                     for (Variable svar:svars) {
-                        System.out.println("Write: " + var.getName() + "." + svar.getShortName() + " -> " + flatname+svar.getShortName());
-                        dest.write(flatname+svar.getShortName(), svar.read());
+                        System.out.println("Write: " + var.getName() + "." + svar.getShortName() + " -> " + flatname+"_"+svar.getShortName());
+                        dest.write(flatname+"_"+svar.getShortName(), svar.read());
                     }
                 }
             }
@@ -211,6 +222,10 @@ public class hdf5flatten {
         System.out.println();
         System.out.println("Usage:");
         System.out.println("hdf5flatten input.hdf output.nc");
+        System.out.println("");
+        System.out.println("Parameters:");
+        System.out.println("    -rg     : remove Groupnames");
+        System.out.println("    -force  : overwrite destination file");
     }
 
     /**
