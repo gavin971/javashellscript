@@ -48,6 +48,7 @@ import ucar.nc2.Attribute;
 import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFileWriteable;
+import ucar.nc2.Structure;
 import ucar.nc2.Variable;
 
 
@@ -111,6 +112,37 @@ public class hdf5flatten {
             destdims = new ArrayList<Dimension>();
             //Dimensions
             System.out.println("Dimensions:");
+            int unnamed = 0;
+            for (Variable var:vars) {
+                List<Dimension> vardims = var.getDimensions();
+                for (Dimension dim:vardims) {
+                    if (dim.getName() == null) {
+                        dim.setName("unnamed"+unnamed);
+                        unnamed++;
+                    }
+                    if (dim.getGroup() == null) {
+                        dim.setGroup(source.getRootGroup());
+                    }
+                    if (!dims.contains(dim)) dims.add(dim);
+                }
+                if (var.getDataType() == DataType.STRUCTURE) {
+                    Structure struct = (Structure)var;
+                    List<Variable> svars = struct.getVariables();
+                    for (Variable svar:svars) {
+                        List<Dimension> svardims = svar.getDimensions();
+                        for (Dimension dim:svardims) {
+                            if (dim.getName() == null) {
+                                dim.setName("unnamed"+unnamed);
+                                unnamed++;
+                            }
+                            if (dim.getGroup() == null) {
+                                dim.setGroup(source.getRootGroup());
+                            }
+                            if (!dims.contains(dim)) dims.add(dim);
+                        }
+                    }
+                }
+            }
             for (Dimension dim:dims) {
                 String flatname = Name2FlatName(dim.getName());
                 System.out.println(dim.toString());
@@ -119,13 +151,20 @@ public class hdf5flatten {
             //Variables
             for (Variable var:vars) {
                 String flatname = Name2FlatName(var.getName());
-                if (!flatname.startsWith("Struct")) {
-                    System.out.println("Define: " + var.getName() + " -> " + flatname);
+                System.out.println("Define: " + var.getName() + " -> " + flatname);
+                if (var.getDataType() != DataType.STRUCTURE) {
                     Variable temp = dest.addVariable(flatname, var.getDataType(), getFlatDims(var));
                     List<Attribute> atts = var.getAttributes();
                     for (Attribute att:atts) dest.addVariableAttribute(temp, att);
                 } else {
-                    System.out.println(var.getName() + " -> NOT CONVERTED!!");
+                    Structure struct = (Structure)var;
+                    List<Variable> svars = struct.getVariables();
+                    for (Variable svar:svars) {
+                        System.out.println("Define: " + var.getName() + "." + svar.getShortName() + " -> " + flatname+svar.getShortName());
+                        Variable temp = dest.addVariable(flatname+svar.getShortName(), svar.getDataType(), getFlatDims(svar));
+                        List<Attribute> atts = svar.getAttributes();
+                        for (Attribute att:atts) dest.addVariableAttribute(temp, att);
+                    }
                 }
             }
             //Global attributes
@@ -139,11 +178,16 @@ public class hdf5flatten {
             //write the data to the dest-file
             for (Variable var:vars) {
                 String flatname = Name2FlatName(var.getName());
-                if (!flatname.startsWith("Struct")) {
+                if (var.getDataType() != DataType.STRUCTURE) {
                     System.out.println("Write: " + var.getName() + " -> " + flatname);
                     dest.write(flatname, var.read());
                 } else {
-                    System.out.println(var.getName() + " -> NOT CONVERTED!!");
+                    Structure struct = (Structure)var;
+                    List<Variable> svars = struct.getVariables();
+                    for (Variable svar:svars) {
+                        System.out.println("Write: " + var.getName() + "." + svar.getShortName() + " -> " + flatname+svar.getShortName());
+                        dest.write(flatname+svar.getShortName(), svar.read());
+                    }
                 }
             }
 
