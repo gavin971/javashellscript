@@ -154,10 +154,15 @@ public class hdf5flatten {
                     }
                 }
             }
+            //check if there are duplicate flat names
+            ArrayList<String> flatnames = new ArrayList<String>();
             for (Dimension dim:dims) {
                 String flatname = Name2FlatName(dim.getName());
-                System.out.println(dim.toString());
-                destdims.add(dest.addDimension(flatname, dim.getLength()));
+                if (!flatnames.contains(flatname)) {
+                    flatnames.add(flatname);
+                    System.out.println(dim.toString());
+                    destdims.add(dest.addDimension(flatname, dim.getLength()));
+                }
             }
             //Variables
             for (Variable var:vars) {
@@ -189,16 +194,21 @@ public class hdf5flatten {
             //write the data to the dest-file
             for (Variable var:vars) {
                 String flatname = Name2FlatName(var.getName());
-                if (var.getDataType() != DataType.STRUCTURE) {
-                    System.out.println("Write: " + var.getName() + " -> " + flatname);
-                    dest.write(flatname, var.read());
-                } else {
-                    Structure struct = (Structure)var;
-                    List<Variable> svars = struct.getVariables();
-                    for (Variable svar:svars) {
-                        System.out.println("Write: " + var.getName() + "." + svar.getShortName() + " -> " + flatname+"_"+svar.getShortName());
-                        dest.write(flatname+"_"+svar.getShortName(), svar.read());
+                try {
+                    if (var.getDataType() != DataType.STRUCTURE) {
+                        System.out.println("Write: " + var.getName() + " -> " + flatname);
+                        dest.write(flatname, var.read());
+                    } else {
+                        Structure struct = (Structure)var;
+                        List<Variable> svars = struct.getVariables();
+                        for (Variable svar:svars) {
+                            System.out.println("Write: " + var.getName() + "." + svar.getShortName() + " -> " + flatname+"_"+svar.getShortName());
+                            dest.write(flatname+"_"+svar.getShortName(), svar.read());
+                        }
                     }
+                } catch (Exception ex) {
+                    System.out.println("        -> unable to write data:");
+                    System.out.println("        -> " + ex.toString());
                 }
             }
 
@@ -240,7 +250,7 @@ public class hdf5flatten {
             if (si != -1) result = name.substring(si+1);
             else result = name;
         }
-        result = result.replaceAll("[/| |-]", "_");
+        result = result.replaceAll("[/| |-|.]", "_");
         return result;
     }
 
