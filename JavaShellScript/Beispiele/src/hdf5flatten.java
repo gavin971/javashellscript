@@ -249,7 +249,7 @@ public class hdf5flatten {
             int si = name.lastIndexOf("/");
             if (si != -1) result = name.substring(si+1);
             else result = name;
-        }
+        } else result = name;
         result = result.replaceAll("[/| |-|.]", "_");
         return result;
     }
