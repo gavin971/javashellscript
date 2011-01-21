@@ -92,7 +92,12 @@ public class Exec {
      */
     public static void runAndWait(String command, String dir) throws IOException {
         try {
-            Runtime.getRuntime().exec(command, getEnvStrArr(), new File(dir)).waitFor();
+            Process pro = Runtime.getRuntime().exec(command, getEnvStrArr(), new File(dir));
+            pro.waitFor();
+            //close all streams of the prozess
+            pro.getInputStream().close();
+            pro.getOutputStream().close();
+            pro.getErrorStream().close();
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
@@ -151,7 +156,9 @@ public class Exec {
             } catch (InterruptedException ex) { }
 
         }
-
+        ausgabe.close();
+        error.close();
+        prozess.getOutputStream().close();
         return output.toString();
     }
 
@@ -207,5 +214,8 @@ public class Exec {
 
         output.flush();
         output.close();
+        input.close();
+        error.close();
+        prozess.getOutputStream().close();
     }
 }
