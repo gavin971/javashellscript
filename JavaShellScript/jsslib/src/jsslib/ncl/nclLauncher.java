@@ -1,6 +1,8 @@
 package jsslib.ncl;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import jsslib.shell.Exec;
 
@@ -24,18 +26,32 @@ public class nclLauncher {
         int index = 1;
         for (Object arg:args) {
             if (arg.getClass().getCanonicalName().contains("[]")) {
-                arguments += "arg"+index+"=(/";
+                arguments += "'arg"+index+"=(/";
                 for (int i=0;i<((Object[])arg).length;i++) {
-                    arguments += ((Object[])arg)[i];
+                    if (((Object[])arg)[i].getClass() == String.class) {
+                       arguments += "\""+((Object[])arg)[i] +"\"";
+                    } else {
+                       arguments += ((Object[])arg)[i];
+                    }
                     if (i < ((Object[])arg).length-1) arguments += ",";
                 }
-                arguments += "/) ";
+                arguments += "/)' ";
             } else {
-                arguments += "arg"+index+"=" + arg + " ";
+                arguments += "'arg"+index+"=" + arg + "' ";
             }
             index++;
         }
-        String output = Exec.runToString("ncl " + nclscript + " " + arguments, path);
+        //comando in einem Shell-Script ausführen
+        File script = File.createTempFile("ncl", "sh");
+        PrintWriter pw = new PrintWriter(script);
+        pw.println("#!/bin/sh");
+        pw.println("ncl " + nclscript + " " + arguments);
+        pw.flush();
+        pw.close();
+        script.setExecutable(true);
+        script.deleteOnExit();
+        String output = Exec.runToString(script.getAbsolutePath(), path);
+        script.delete();
         return output;
     }
 

@@ -159,11 +159,11 @@ public class ExcelReader {
                                 Format dataformat = formater.createFormat(zelle);
                                 if (dataformat != null) {
                                     //datum selbst formatieren
-                                    if (dataformat instanceof SimpleDateFormat) {
-                                        text = String.format(formatvorn + "tF" + formathinten, zelle.getDateCellValue());
-                                    } else {
+                                    //if (dataformat instanceof SimpleDateFormat) {
+                                    //    text = String.format(formatvorn + "tF" + formathinten, zelle.getDateCellValue());
+                                    //} else {
                                         text = String.format(formatvorn + "s" + formathinten, formater.formatCellValue(zelle,evaluator));
-                                    }
+                                    //}
                                 } else
                                     //kein besonderes Format
                                     text = String.format(Locale.ENGLISH, formatvorn + "f" + formathinten, wert.getNumberValue());
