@@ -73,7 +73,7 @@ void Beschreibung() {
     cout << endl;
     cout << "--------------------------------------------" << endl;
     cout << "           JavaShellScript 0.1              " << endl;
-    cout << "     Copyright (C) Robert Schuster 2009     " << endl;
+    cout << "   Copyright (C) Robert Schuster 2009-2011  " << endl;
     cout << "--------------------------------------------" << endl;
     cout << endl;
     cout << "Make Java-Files executable as shell script." << endl;

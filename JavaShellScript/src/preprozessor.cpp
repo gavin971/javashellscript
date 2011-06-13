@@ -251,8 +251,8 @@ void preprozessor::prozess() {
 
         //Konstructor für Klasse (damit auch nicht statische Funktionen aufgerufen
         //werden können
-        ziel << "new " + mainklasse + "(); } ";
-        ziel << "public " + mainklasse + "() { ";
+        ziel << "new " + mainklasse + "(args); } ";
+        ziel << "public " + mainklasse + "(String[] args) { ";
 
         //Alles in Try-catch-Block, damit nicht jede anweisung einzeln abgefangen werden muss
         ziel << "try { " << endl;
