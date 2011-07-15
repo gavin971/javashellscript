@@ -36,11 +36,11 @@ public class FileTools {
             out = new PrintWriter(dest);
             String line = null;
             if (keysToReplace != null) {
-                String[] keys = (String[]) keysToReplace.keySet().toArray();
+                String[] keys = keysToReplace.keySet().toArray(new String[0]);
                 while((line = in.readLine()) != null) {
                     for (String key:keys) {
-                        if (line.contains(key)) {
-                            line = line.replaceAll(key, keysToReplace.get(key));
+                        while (line.contains(key)) {
+                            line = line.replace(key, keysToReplace.get(key));
                         }
                     }
                     out.println(line);
