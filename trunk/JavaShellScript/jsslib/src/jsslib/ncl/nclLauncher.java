@@ -45,7 +45,13 @@ public class nclLauncher {
         File script = File.createTempFile("ncl", "sh");
         PrintWriter pw = new PrintWriter(script);
         pw.println("#!/bin/sh");
-        pw.println("ncl " + nclscript + " " + arguments);
+        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+            pw.println("script -q /dev/null $SHELL -c \"ncl -Q " + nclscript + " " + arguments+"\"");        
+        } else if (System.getProperty("os.name").toLowerCase().contains("linux")) {
+            pw.println("script -c \"ncl -Q " + nclscript + " " + arguments+"\" -q /dev/null");                        
+        } else {
+            pw.println("echo \"status_exit(0)\" | ncl -Q " + nclscript + " " + arguments);            
+        }
         pw.flush();
         pw.close();
         script.setExecutable(true);
