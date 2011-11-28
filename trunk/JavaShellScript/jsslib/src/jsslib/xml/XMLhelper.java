@@ -113,6 +113,7 @@ public class XMLhelper {
         Node child = getChildNodeByName(childname, node);
         if (child == null) return null;
         Node attr = child.getAttributes().getNamedItem(attrname);
+        if (attr == null) return null;
         return attr.getNodeValue();
     }
     
