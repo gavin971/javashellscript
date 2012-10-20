@@ -38,3 +38,14 @@ CND_ARTIFACT_PATH_Release_Linux=dist/jss
 CND_PACKAGE_DIR_Release_Linux=dist/Release_Linux//package
 CND_PACKAGE_NAME_Release_Linux=javashellscript.tar
 CND_PACKAGE_PATH_Release_Linux=dist/Release_Linux//package/javashellscript.tar
+#
+# include compiler specific variables
+#
+# dmake command
+ROOT:sh = test -f nbproject/private/Makefile-variables.mk || \
+	(mkdir -p nbproject/private && touch nbproject/private/Makefile-variables.mk)
+#
+# gmake command
+.PHONY: $(shell test -f nbproject/private/Makefile-variables.mk || (mkdir -p nbproject/private && touch nbproject/private/Makefile-variables.mk))
+#
+include nbproject/private/Makefile-variables.mk

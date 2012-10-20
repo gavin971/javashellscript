@@ -13,6 +13,18 @@ import jsslib.shell.Exec;
 public class nclLauncher {
 
     /**
+     * Return a String representation of the argument
+     * @param arg
+     * @return
+     */
+    private static String getArgumentString(Object arg) {
+        if (arg instanceof String) {
+            return "\\\""+arg+"\\\"";
+        }
+        else return arg.toString();
+    }
+    
+    /**
      * start ncl with a given ncl script and the given parameters
      * @param nclscript     the script to run
      * @param path          the path where to run the script
@@ -28,23 +40,19 @@ public class nclLauncher {
             if (arg.getClass().getCanonicalName().contains("[]")) {
                 arguments += "'arg"+index+"=(/";
                 for (int i=0;i<((Object[])arg).length;i++) {
-                    if (((Object[])arg)[i].getClass() == String.class) {
-                       arguments += "\""+((Object[])arg)[i] +"\"";
-                    } else {
-                       arguments += ((Object[])arg)[i];
-                    }
+                    arguments += getArgumentString(((Object[])arg)[i]);
                     if (i < ((Object[])arg).length-1) arguments += ",";
                 }
                 arguments += "/)' ";
             } else {
-                arguments += "'arg"+index+"=" + arg + "' ";
+                arguments += "'arg"+index+"=" + getArgumentString(arg) + "' ";
             }
             index++;
         }
         //comando in einem Shell-Script ausführen
         File script = File.createTempFile("ncl", "sh");
         PrintWriter pw = new PrintWriter(script);
-        pw.println("#!/bin/sh");
+        pw.println("#!/bin/bash -l");
         if (System.getProperty("os.name").toLowerCase().contains("mac")) {
             pw.println("script -q /dev/null $SHELL -c \"ncl -Q " + nclscript + " " + arguments+"\"");        
         } else if (System.getProperty("os.name").toLowerCase().contains("linux")) {
