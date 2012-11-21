@@ -118,6 +118,19 @@ public class XMLhelper {
     }
     
     /**
+     * Gibt den Inhalt eines Attributs eines Nodes zurück
+     * @param attrname
+     * @param node
+     * @return
+     */
+    public static String getNodeAttributeText(String attrname, Node node) {
+        if (node == null) return null;
+        Node attr = node.getAttributes().getNamedItem(attrname);
+        if (attr == null) return null;
+        return attr.getNodeValue();
+    }
+    
+    /**
      * Gibt den Wert eines Attributes als Integer zurück
      * @param childname
      * @param attrname
